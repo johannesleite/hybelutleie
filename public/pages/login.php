@@ -7,7 +7,7 @@ include(INC_PATH . '/header.php');
 
 <div class="container h-100 d-flex align-items-center">
     <div class="col-md-4 py-3 mx-auto">
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-outline mb-3">
                 <label class="form-label" for="email">Epostadresse</label>
                 <input type="email" name="email" id="email" class="form-control" />
