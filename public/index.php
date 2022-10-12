@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hybelutleie</title>
-</head>
-<body>
-    <h1>hello</h1>
-</body>
-</html>
+<?php require_once('../private/paths.php');
+
+include(INC_PATH . '/header.php');
+
+include(INC_PATH . '/footer.php');
