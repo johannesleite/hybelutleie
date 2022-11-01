@@ -1,5 +1,5 @@
 <?php
-require_once('../../private/paths.php');
+require_once('../../private/initialize.php');
 
 include(INC_PATH . '/header.php');
 ?>
@@ -27,7 +27,6 @@ include(INC_PATH . '/header.php');
                 <select class="form-select" name="residenceType" id="residenceType">
                     <option value="hybel">Hybel</option>
                     <option value="rom">Rom i kollektiv</option>
-                    <option value="leilighet">Leilighet</option>
                 </select>
             </div>
             <div class="form-outline mb-3">

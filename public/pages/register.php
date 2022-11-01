@@ -1,5 +1,5 @@
 <?php
-require_once('../../private/paths.php');
+require_once('../../private/initialize.php');
 require(INC_PATH . '/db.inc.php');
 include(INC_PATH . '/header.php');
 ?>
@@ -8,6 +8,7 @@ include(INC_PATH . '/header.php');
 
 <div class="container h-100 d-flex align-items-center">
     <div class="col-md-4 py-3 mx-auto">
+        <h3>Registrere ny bruker</h3>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-outline mb-1">
                 <label class="form-label" for="firstName">Fornavn</label>
@@ -79,9 +80,7 @@ if (isset($_POST["submit"])) {
         $email = $_POST["email"];
     }
 
-    $conn = new Conn();
-    $dbConn = $conn->conn();
-    $stmt = $dbConn->prepare("SELECT * FROM user WHERE user_email=?");
+    $stmt = $conn->prepare("SELECT * FROM user WHERE user_email=?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
 
@@ -103,26 +102,25 @@ if (isset($_POST["submit"])) {
     if (empty($errorArr)) {
 
         //preparing statement, binding parameters to the form data and executing statement before closing it.
-        $conn = new Conn();
-        $dbConn = $conn->conn();
-        $stmt = $dbConn->prepare("INSERT INTO user (user_firstname, user_lastname, user_phone, user_email, user_password) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO user (user_firstname, user_lastname, user_phone, user_email, user_password) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $firstName, $lastName, $phone, $email, $hashedPassword);
         $stmt->execute();
 
         $stmt->close();
-        $dbConn->close();
-        ?>
+        $conn->close();
+?>
 
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
-                <p><strong>Din brukerprofil har blitt opprettet!</strong></p>
+                <p><strong>Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!</strong></p>
+                <?php header("Refresh:5; url=" . urlFor('/pages/login.php')); ?>
             </div>
         </div>
-        
-        <?php 
+
+    <?php
     } else {
 
-?>
+    ?>
 
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">

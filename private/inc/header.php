@@ -21,10 +21,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link " href="#">Innhold</a>
+                            <a class="nav-link" href="<?php echo urlFor('/index.php'); ?>">Se annonser</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Innhold</a>
+                            <a class="nav-link " href="<?php echo urlFor('/pages/createAd.php'); ?>">Lag ny annonse</a>
                         </li>
                         <div class="">
                             <a class="btn btn-outline-primary btn-sm me-2" href="<?php echo urlFor('/pages/login.php'); ?>">Logg inn</a>
