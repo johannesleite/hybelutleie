@@ -1,5 +1,6 @@
 <?php
 require_once('../../private/paths.php');
+require(INC_PATH . '/db.inc.php');
 include(INC_PATH . '/header.php');
 ?>
 

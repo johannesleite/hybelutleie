@@ -27,8 +27,8 @@
                             <a class="nav-link" href="#">Innhold</a>
                         </li>
                         <div class="">
-                            <a class="btn btn-outline-primary btn-sm me-2" href="pages/login.php">Logg inn</a>
-                            <a class="btn btn-primary btn-sm" href="pages/register.php">Registrer</a>
+                            <a class="btn btn-outline-primary btn-sm me-2" href="<?php echo urlFor('/pages/login.php'); ?>">Logg inn</a>
+                            <a class="btn btn-primary btn-sm" href="<?php echo urlFor('/pages/register.php'); ?>">Registrer</a>
                         </div>
                     </ul>
                 </div>

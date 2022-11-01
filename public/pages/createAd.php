@@ -54,7 +54,7 @@ include(INC_PATH . '/header.php');
 <?php
 if (isset($_POST["submit"])) {
 
-    $adTitle = $_POST["firstName"];
+    $adTitle = $_POST["adTitle"];
     $lastName = $_POST["lastName"];
     $email = $_POST["email"];
     $phone = $_POST["phone"];
@@ -63,8 +63,8 @@ if (isset($_POST["submit"])) {
     $inputArr += array('firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'phone' => $phone);
 
     //preparing statement, binding parameters to the form data and executing statement before closing it.
-    $sql = $conn->prepare("INSERT INTO hybel (ad_image, ad_title, ad_residence_type, ad_desc, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $sql->bind_param("ssss", $firstName, $lastName, $email, $phone);
+    $sql = $conn->prepare("INSERT INTO hybel (ad_title, ad_image, ad_residence_type, ad_desc, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $sql->bind_param("s?ssisi", $firstName, $lastName, $email, $phone);
     $sql->execute();
 
     $sql->close();
