@@ -2,7 +2,6 @@
 
 class Conn
 {
-
     function conn()
     {
         $user = 'root';

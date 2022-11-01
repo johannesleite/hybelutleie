@@ -11,7 +11,7 @@ include(INC_PATH . '/header.php');
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-outline mb-1">
                 <label class="form-label" for="firstName">Fornavn</label>
-                <input type="text" name="phone" id="phone" class="form-control" />
+                <input type="text" name="firstName" id="firstName" class="form-control" />
             </div>
             <div class="form-outline mb-1">
                 <label class="form-label" for="lastName">Etternavn</label>
@@ -50,30 +50,45 @@ if (isset($_POST["submit"])) {
     if (empty($_POST["firstName"])) {
         $errorArr["firstName"] = "Fornavn er påkrevd";
     } else if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["firstName"])) {
-        $errorArr["firstName"] = "First name: Only letters and whitespace allowed";
-    } else
+        $errorArr["firstName"] = "Fornavn kan kun inneholde bokstaver";
+    } else {
         $firstName = $_POST["firstName"];
+    }
 
     if (empty($_POST["lastName"])) {
         $errorArr["lastName"] = "Etternavn er påkrevd";
     } else if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastName"])) {
-        $errorArr["lastName"] = "Last name: Only letters and whitespace allowed";
-    } else
+        $errorArr["lastName"] = "Etternavn kan kun inneholde bokstaver";
+    } else {
         $lastName = $_POST["lastName"];
+    }
 
     if (empty($_POST["phone"])) {
         $errorArr["phone"] = "Telefonnummer er påkrevd";
     } else if (!is_numeric($_POST["phone"])) {
-        $errorArr["phone"] = "Phone number must contain numbers only";
-    } else
+        $errorArr["phone"] = "Telefonnummer kan bare inneholde tall";
+    } else {
         $phone = $_POST["phone"];
+    }
 
     if (empty($_POST["email"])) {
         $errorArr["email"] = "Epostadresse er påkrevd";
     } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        $errorArr["email"] = "Invalid email format";
-    } else
+        $errorArr["email"] = "Epostadressen har ugyldig format";
+    } else {
         $email = $_POST["email"];
+    }
+
+    $conn = new Conn();
+    $dbConn = $conn->conn();
+    $stmt = $dbConn->prepare("SELECT * FROM user WHERE user_email=?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $exists = (bool) $stmt->get_result()->fetch_row();
+    if ($exists) {
+        $errorArr["email"] = "En bruker med denne eposten eksisterer allerede";
+    }
 
     if (empty($_POST["password"]) && empty($_POST["checkPassword"])) {
         $errorArr["password"] = "Passord er påkrevd";
@@ -88,23 +103,30 @@ if (isset($_POST["submit"])) {
     if (empty($errorArr)) {
 
         //preparing statement, binding parameters to the form data and executing statement before closing it.
-        $sql = $conn->prepare("INSERT INTO user (user_firstname, user_lastname, user_phone, user_email, user_password) VALUES (?, ?, ?, ?, ?)");
-        $sql->bind_param("sssss", $firstName, $lastName, $phone, $email, $hashedPassword);
-        $sql->execute();
+        $conn = new Conn();
+        $dbConn = $conn->conn();
+        $stmt = $dbConn->prepare("INSERT INTO user (user_firstname, user_lastname, user_phone, user_email, user_password) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $firstName, $lastName, $phone, $email, $hashedPassword);
+        $stmt->execute();
 
-        $sql->close();
-        $conn->close();
+        $stmt->close();
+        $dbConn->close();
+        ?>
 
-        echo "<h2>Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!</h2>";
-        header("refresh:5; Location: " . urlFor('/pages/login.php'));
-        exit();
+        <div class="container d-flex align-items-center">
+            <div class="col-md-4 py-3 mx-auto">
+                <p><strong>Din brukerprofil har blitt opprettet!</strong></p>
+            </div>
+        </div>
+        
+        <?php 
     } else {
 
 ?>
 
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
-                <p style="color: red; font-weight: bold;">Se feilmeldinger under</p>
+                <p style="color: red; font-weight: bold;">Vennlist rett opp feilene under og prøv på nytt</p>
                 <ul>
                     <?php foreach ($errorArr as $value) { ?>
                         <li><?php echo $value ?></li>

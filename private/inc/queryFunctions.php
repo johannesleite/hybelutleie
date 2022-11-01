@@ -2,7 +2,7 @@
 
 require(INC_PATH . '/db.inc.php');
 
-    function InsertAd ($firstName, $lastName, $email, $phone) {
+    function insertAd ($firstName, $lastName, $email, $phone) {
     
         $conn = new Conn();
         $dbConn = $conn->conn();
@@ -12,6 +12,21 @@ require(INC_PATH . '/db.inc.php');
         $sql->execute();
         
         $sql->close();
+    }
 
+    function checkForExistingEmail ($email) {
+        $conn = new Conn();
+    $dbConn = $conn->conn();
+    $stmt = $dbConn->prepare("SELECT * FROM user WHERE user_email=?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $stmt->store_result();
+    $emailCheck = "";
+    $stmt->bind_result($emailCheck);
+    $stmt->fetch();
+    if ($stmt->num_rows() == 1) {
+        $errorArr["email"] = "En bruker med denne eposten eksisterer allerede";
+    }
     }
 
