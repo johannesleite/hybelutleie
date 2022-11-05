@@ -33,7 +33,7 @@ include(INC_PATH . '/header.php');
                 <textarea class="form-control" name="adDescription" id="description" rows="8" placeholder="Legg til beskrivelse her"></textarea>
             </div>
             <div class="form-outline mb-3">
-                <label class="form-label" for="adSize">Pris</label>
+                <label class="form-label" for="adSize">Størrelse i kvm</label>
                 <input type="text" name="adSize" id="adSize" class="form-control" />
             </div>
             <div class="form-outline mb-3">

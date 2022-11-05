@@ -79,6 +79,9 @@ if (isset($_POST["submit"])) {
     } else {
         $email = $_POST["email"];
     }
+    
+    $db = new Database;
+    $conn = $db->connection();
 
     $stmt = $conn->prepare("SELECT * FROM user WHERE user_email=?");
     $stmt->bind_param("s", $email);

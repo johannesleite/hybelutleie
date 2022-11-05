@@ -47,12 +47,10 @@ if (isset($_POST["submit"])) {
 
     if (empty($errorArr)) {
 
-        // $Dbconn = new Database();
-        // $conn = $Dbconn->connect();
-        $conn = new Database();
-        $dbConn = $conn->connection();
+        $db = new Database;
+        $conn = $db->connection();
 
-        $stmt = $dbConn->prepare("SELECT * FROM user WHERE user_email=?");
+        $stmt = $conn->prepare("SELECT * FROM user WHERE user_email=?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         // $result = $stmt->bind_result();
