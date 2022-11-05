@@ -46,36 +46,36 @@ if (isset($_POST["submit"])) {
     }
 
     if (empty($errorArr)) {
-        $stmt = $conn->prepare("SELECT * FROM user WHERE user_email=?");
+
+        // $Dbconn = new Database();
+        // $conn = $Dbconn->connect();
+        $conn = new Database();
+        $dbConn = $conn->connection();
+
+        $stmt = $dbConn->prepare("SELECT * FROM user WHERE user_email=?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        $result = $stmt->bind_result();
-        $user = $result->fetch_assoc();
+        // $result = $stmt->bind_result();
+        // $user = $result->fetch_assoc();
 
         if ($user && password_verify($password, $user['user_password'])) {
+            $_SESSION['user_auth'] = "auth";
             $_SESSION['user_id'] = $user['user_firstname'];
+?>
+            <div class="container d-flex align-items-center">
+                <div class="col-md-4 py-3 mx-auto">
+                    <p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
+                    <?php header("Refresh:5; url=" . urlFor('/pages/index.php')); ?>
+                </div>
+            </div>
+        <?php
 
         } else {
             //failed
         }
-    }
-
-
-
-?>
-
-        <div class="container d-flex align-items-center">
-            <div class="col-md-4 py-3 mx-auto">
-                <p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
-                <?php header("Refresh:5; url=" . urlFor('/pages/index.php')); ?>
-            </div>
-        </div>
-
-    <?php
     } else {
 
-    ?>
-
+        ?>
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
                 <p style="color: red; font-weight: bold;">Vennlist rett opp feilene under og prøv på nytt</p>
@@ -87,8 +87,7 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
 <?php
-
     }
-?>
+}
 
-<?php include(INC_PATH . '/footer.php'); ?>
+include(INC_PATH . '/footer.php');

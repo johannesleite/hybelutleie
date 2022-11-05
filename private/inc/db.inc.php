@@ -1,11 +1,20 @@
 <?php
 
-$user = 'root';
-$password = '12345';
-$db = 'hybelprosjektutkast';
+class Database {
 
-$conn = new mysqli('localhost', $user, $password, $db) or die("unable to connect");
+    public function connection ()
+    {
+        $servername = 'localhost';
+        $user = 'root';
+        $password = '12345';
+        $db = 'hybelprosjektutkast';
 
-if ($conn->connect_errno) {
-    echo "failed to connect to MySQL: " . $conn->connect_error;
+        $conn = new mysqli($servername, $user, $password, $db);
+
+        if ($conn->connect_errno) {
+            echo "failed to connect to MySQL: " . $conn->connect_error;
+        } else
+        return $conn;
+    }
+
 }

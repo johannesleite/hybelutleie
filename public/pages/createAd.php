@@ -4,7 +4,6 @@ require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 ?>
 
-
 <!--login form-->
 
 <div class="container text-center my-2">
@@ -20,18 +19,22 @@ include(INC_PATH . '/header.php');
             </div>
             <div class="mb-3">
                 <label for="formFileMultiple" class="form-label">Legg til bilder (Kun .jpg- eller .jpeg-format)</label>
-                <input class="form-control" type="file" name="files[]" id="formFileMultiple" multiple>
+                <input class="form-control" type="file" name="formFileMultiple" id="formFileMultiple" multiple>
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="adResidenceType">Hva leies ut</label>
-                <select class="form-select" name="residenceType" id="residenceType">
+                <select class="form-select" name="adResidenceType" id="adResidenceType">
                     <option value="hybel">Hybel</option>
                     <option value="rom">Rom i kollektiv</option>
                 </select>
             </div>
             <div class="form-outline mb-3">
-                <label class="form-label" for="description">Beskrivelse</label>
+                <label class="form-label" for="adDescription">Beskrivelse</label>
                 <textarea class="form-control" name="adDescription" id="description" rows="8" placeholder="Legg til beskrivelse her"></textarea>
+            </div>
+            <div class="form-outline mb-3">
+                <label class="form-label" for="adSize">Pris</label>
+                <input type="text" name="adSize" id="adSize" class="form-control" />
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="price">Pris</label>
@@ -53,22 +56,27 @@ include(INC_PATH . '/header.php');
 <?php
 if (isset($_POST["submit"])) {
 
-    $adTitle = $_POST["adTitle"];
-    $lastName = $_POST["lastName"];
-    $email = $_POST["email"];
-    $phone = $_POST["phone"];
+    $adTitle = $formFileMultiple = $adResidenceType = $adDescription  = $streetAddress = '';
+    $adSize = $price = $zipcode = '';
 
-    //$inputArr += ['firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'phone' => $phone];
-    $inputArr += array('firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'phone' => $phone);
+    $adTitle = $_POST["adTitle"];
+    $formFileMultiple = $_POST["formFileMultiple"];
+    $adResidenceType = $_POST["adResidenceType"];
+    $adDescription = $_POST["adDescription"];
+    $adSize = $_POST["adSize"];
+    $price = $_POST["price"];
+    $streetAddress = $_POST["streetAddress"];
+    $zipcode = $_POST["zipcode"];
 
     //preparing statement, binding parameters to the form data and executing statement before closing it.
-    $sql = $conn->prepare("INSERT INTO hybel (ad_title, ad_image, ad_residence_type, ad_desc, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $sql->bind_param("s?ssisi", $firstName, $lastName, $email, $phone);
+    $db = new Database;
+    $conn = $db->connection();
+    $sql = $conn->prepare("INSERT INTO hybel (ad_title, ad_image, ad_residence_type, ad_desc, ad_size ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $sql->bind_param("sbssisi", $adTitle, $formFileMultiple, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
     $sql->execute();
 
     $sql->close();
     $conn->close();
-
 }
 
 
