@@ -1,6 +1,6 @@
 <?php
 require_once('../../private/initialize.php');
-
+require(INC_PATH . '/db.inc.php');
 include(INC_PATH . '/header.php');
 ?>
 
@@ -18,8 +18,8 @@ include(INC_PATH . '/header.php');
                 <input type="text" name="adTitle" id="adTitle" class="form-control" />
             </div>
             <div class="mb-3">
-                <label for="formFileMultiple" class="form-label">Legg til bilder (Kun .jpg- eller .jpeg-format)</label>
-                <input class="form-control" type="file" name="formFileMultiple" id="formFileMultiple" multiple>
+                <label for="imageFilename" class="form-label">Legg til bilder (Kun .jpg- eller .jpeg-format)</label>
+                <input class="form-control" type="file" name="imageFilename" id="imageFilename" multiple>
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="adResidenceType">Hva leies ut</label>
@@ -60,7 +60,6 @@ if (isset($_POST["submit"])) {
     $adSize = $price = $zipcode = '';
 
     $adTitle = $_POST["adTitle"];
-    $formFileMultiple = $_POST["formFileMultiple"];
     $adResidenceType = $_POST["adResidenceType"];
     $adDescription = $_POST["adDescription"];
     $adSize = $_POST["adSize"];
@@ -68,11 +67,20 @@ if (isset($_POST["submit"])) {
     $streetAddress = $_POST["streetAddress"];
     $zipcode = $_POST["zipcode"];
 
+    $imageFilename = $_FILES["imageFilename"]["name"];
+    $filepath = urlFor('/assets/img/').$imageFilename;
+    $tempFilename = $_FILES["imageFilename"]["tmp_name"];
+
+    if (move_uploaded_file($tempFilename, $filepath)) {
+        return true;
+    }
+    
+
     //preparing statement, binding parameters to the form data and executing statement before closing it.
     $db = new Database;
     $conn = $db->connection();
-    $sql = $conn->prepare("INSERT INTO hybel (ad_title, ad_image, ad_residence_type, ad_desc, ad_size ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $sql->bind_param("sbssisi", $adTitle, $formFileMultiple, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
+    $sql = $conn->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $sql->bind_param("ssssiisi", $adTitle, $filepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
     $sql->execute();
 
     $sql->close();

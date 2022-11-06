@@ -31,8 +31,8 @@ include(INC_PATH . '/header.php');
                     </div>
                 </div>
             </div>
-           <?php
-        } ?>
+
+            <?php } ?>
         </div>
     </div>
 <?php
