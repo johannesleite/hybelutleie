@@ -1,4 +1,5 @@
-<?php require_once('../private/initialize.php');
+<?php
+require_once('../private/initialize.php');
 require(INC_PATH . '/db.inc.php');
 include(INC_PATH . '/header.php');
 ?>

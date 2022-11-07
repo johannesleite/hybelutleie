@@ -12,7 +12,8 @@ include(INC_PATH . '/header.php');
 
 <div class="container d-flex align-items-center my-5">
     <div class="col-md-6 py-4 mx-auto">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
+    <!-- echo htmlspecialchars($_SERVER['PHP_SELF']);-->
+        <form action="" method="POST" enctype="multipart/form-data">
             <div class="form-outline mb-3">
                 <label class="form-label" for="adTitle">Tittel</label>
                 <input type="text" name="adTitle" id="adTitle" class="form-control" />
@@ -56,7 +57,7 @@ include(INC_PATH . '/header.php');
 <?php
 if (isset($_POST["submit"])) {
 
-    $adTitle = $formFileMultiple = $adResidenceType = $adDescription  = $streetAddress = '';
+    $adTitle = $adResidenceType = $adDescription  = $streetAddress = '';
     $adSize = $price = $zipcode = '';
 
     $adTitle = $_POST["adTitle"];
@@ -67,30 +68,26 @@ if (isset($_POST["submit"])) {
     $streetAddress = $_POST["streetAddress"];
     $zipcode = $_POST["zipcode"];
 
-    echo var_dump($_FILES);
-
+    $dir = $_SERVER['DOCUMENT_ROOT'].'/hybelutleie/public/assets/img/';
     $imageFilename = $_FILES["imageFilename"]["name"];
     $filepath = urlFor('/assets/img/').$imageFilename;
     $tempFilename = $_FILES["imageFilename"]["tmp_name"];
 
     if (is_uploaded_file($tempFilename)) {
-        move_uploaded_file($tempFilename, $filepath);
+        move_uploaded_file($tempFilename, $dir.$imageFilename);
     } else {
         echo "fail";
     }
     
-    
-
     //preparing statement, binding parameters to the form data and executing statement before closing it.
     $db = new Database;
     $conn = $db->connection();
-    $sql = $conn->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $sql->bind_param("ssssiisi", $adTitle, $filepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
-    $sql->execute();
+    $stmt = $conn->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssiisi", $adTitle, $filepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
+    $stmt->execute();
 
-    $sql->close();
+    $stmt->close();
     $conn->close();
 }
-
 
 include(INC_PATH . '/footer.php'); ?>
