@@ -16,7 +16,7 @@ include(INC_PATH . '/header.php');
         while ($row = $result->fetch_assoc()) {
         ?>
 
-            <div class="card mb-3">
+            <div class="card my-4">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="<?php echo $row['ad_image']; ?>" class="img-fluid rounded-start" alt="...">

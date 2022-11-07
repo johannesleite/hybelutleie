@@ -67,13 +67,18 @@ if (isset($_POST["submit"])) {
     $streetAddress = $_POST["streetAddress"];
     $zipcode = $_POST["zipcode"];
 
+    echo var_dump($_FILES);
+
     $imageFilename = $_FILES["imageFilename"]["name"];
     $filepath = urlFor('/assets/img/').$imageFilename;
     $tempFilename = $_FILES["imageFilename"]["tmp_name"];
 
-    if (move_uploaded_file($tempFilename, $filepath)) {
-        return true;
+    if (is_uploaded_file($tempFilename)) {
+        move_uploaded_file($tempFilename, $filepath);
+    } else {
+        echo "fail";
     }
+    
     
 
     //preparing statement, binding parameters to the form data and executing statement before closing it.
