@@ -1,6 +1,7 @@
 <?php
 require_once('../../private/initialize.php');
-require(INC_PATH . '/db.inc.php');
+//require(INC_PATH . '/db.inc.php');
+require(PRIVATE_PATH . '/advert.class.php');
 include(INC_PATH . '/header.php');
 ?>
 
@@ -26,7 +27,7 @@ include(INC_PATH . '/header.php');
                 <label class="form-label" for="adResidenceType">Hva leies ut</label>
                 <select class="form-select" name="adResidenceType" id="adResidenceType">
                     <option value="hybel">Hybel</option>
-                    <option value="rom">Rom i kollektiv</option>
+                    <option value="rom i kollektiv">Rom i kollektiv</option>
                 </select>
             </div>
             <div class="form-outline mb-3">
@@ -70,24 +71,19 @@ if (isset($_POST["submit"])) {
 
     $dir = $_SERVER['DOCUMENT_ROOT'].'/hybelutleie/public/assets/img/';
     $imageFilename = $_FILES["imageFilename"]["name"];
-    $filepath = urlFor('/assets/img/').$imageFilename;
+    $SQLfilepath = urlFor('/assets/img/').$imageFilename;
     $tempFilename = $_FILES["imageFilename"]["tmp_name"];
 
     if (is_uploaded_file($tempFilename)) {
         move_uploaded_file($tempFilename, $dir.$imageFilename);
+        echo "<script>alert(\"Annonsen ble lastet opp!\")</script>";
     } else {
-        echo "fail";
+        echo "Filen finnes ikke, prøv på nytt";
     }
     
-    //preparing statement, binding parameters to the form data and executing statement before closing it.
-    $db = new Database;
-    $conn = $db->connection();
-    $stmt = $conn->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssiisi", $adTitle, $filepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
-    $stmt->execute();
+    $ad = new Advert;
+    $ad->adInsertNew($adTitle, $SQLfilepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
 
-    $stmt->close();
-    $conn->close();
 }
 
 include(INC_PATH . '/footer.php'); ?>

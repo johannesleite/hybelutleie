@@ -1,6 +1,7 @@
 <?php
 require_once('../private/initialize.php');
-require(INC_PATH . '/db.inc.php');
+require(PRIVATE_PATH . '/advert.class.php');
+//require(INC_PATH . '/db.inc.php');
 include(INC_PATH . '/header.php');
 ?>
 
@@ -11,13 +12,12 @@ include(INC_PATH . '/header.php');
         <div class="col-lg-10 mx-auto">
 
         <?php
-        $db = new Database;
-        $conn = $db->connection();
-        $result = $conn->query("SELECT * FROM advert;");
+        $ad = new Advert;
+        $result = $ad->adSelectAll();
         while ($row = $result->fetch_assoc()) {
         ?>
 
-            <div class="card my-4">
+            <div class="card shadow-sm my-4">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="<?php echo $row['ad_image']; ?>" class="img-fluid rounded-start" alt="...">
@@ -25,9 +25,11 @@ include(INC_PATH . '/header.php');
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $row['ad_title']; ?></h5>
-                            <p class="card-text"><?php echo $row['ad_residence_type']; ?></p>
-                            <p class="card-text"><?php echo $row['ad_price']; ?>,-</p>
-                            <p class="card-text"><small class="text-muted"><?php echo $row['ad_timestamp']; ?></small></p>
+                            <p class="card-subtitle mb-2 text-muted">Boligtype: <?php echo $row['ad_residence_type']; ?></p>
+                            <p class="card-text">Størrelse: <?php echo $row['ad_size']; ?>kvm</p>
+                            <p class="card-text"><strong>Pris: <?php echo $row['ad_price']; ?>,-</strong></p>
+                            <p class="card-text"><?php echo $row['ad_zip'] . ", " . $row['zip_location']; ?></p>
+                            <p class="card-text"><small class="text-muted">Dato lagt ut: <?php echo $row['ad_timestamp']; ?></small></p>
                         </div>
                     </div>
                 </div>
