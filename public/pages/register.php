@@ -1,6 +1,5 @@
 <?php
 require_once('../../private/initialize.php');
-require(INC_PATH . '/db.inc.php');
 include(INC_PATH . '/header.php');
 ?>
 
@@ -79,13 +78,11 @@ if (isset($_POST["submit"])) {
     } else {
         $email = $_POST["email"];
     }
-    
-    $db = new Database;
-    $conn = $db->connection();
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE user_email=?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
+    
+    $user = new User;
+
+    $result = $user->userEmailExists($email);
 
     $exists = (bool) $stmt->get_result()->fetch_row();
     if ($exists) {

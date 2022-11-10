@@ -1,7 +1,5 @@
 <?php
 require_once('../private/initialize.php');
-require(PRIVATE_PATH . '/advert.class.php');
-//require(INC_PATH . '/db.inc.php');
 include(INC_PATH . '/header.php');
 ?>
 
@@ -17,25 +15,33 @@ include(INC_PATH . '/header.php');
         while ($row = $result->fetch_assoc()) {
         ?>
 
-            <div class="card shadow-sm my-4">
+            <div class="card shadow-sm border-0 my-4">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="<?php echo $row['ad_image']; ?>" class="img-fluid rounded-start" alt="...">
+                        <img src="<?php echo $row['ad_image']; ?>" class="img-fluid rounded-start" alt="advert image">
                     </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $row['ad_title']; ?></h5>
-                            <p class="card-subtitle mb-2 text-muted">Boligtype: <?php echo $row['ad_residence_type']; ?></p>
+                    <div class="col-md-8 align-self-center">
+                        <div class="card-body py-1">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title"><?php echo $row['ad_title']; ?></h5>
+                                <div class="text-muted">Dato lagt ut: <?php echo $row['ad_timestamp']; ?></div>
+                            </div>
+                            <p class="card-text">Boligtype: <?php echo $row['ad_residence_type']; ?></p>
                             <p class="card-text">Størrelse: <?php echo $row['ad_size']; ?>kvm</p>
                             <p class="card-text"><strong>Pris: <?php echo $row['ad_price']; ?>,-</strong></p>
-                            <p class="card-text"><?php echo $row['ad_zip'] . ", " . $row['zip_location']; ?></p>
-                            <p class="card-text"><small class="text-muted">Dato lagt ut: <?php echo $row['ad_timestamp']; ?></small></p>
+                            <div class="d-flex justify-content-between">
+                                <p><?php echo $row['ad_zip'] . ", " . $row['zip_location']; ?></p>
+                                <form action="<?php echo urlFor('/pages/viewOneAd.php'); ?>" method="get">
+                                    <input type="hidden" name="ad_id" value="<?php echo $row['ad_id']; ?>">
+                                    <button type="submit" class="btn btn-primary">Se hele annonsen</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <?php } ?>
+  <?php } ?>
         </div>
     </div>
 <?php

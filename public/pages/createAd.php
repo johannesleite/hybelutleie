@@ -1,7 +1,5 @@
 <?php
 require_once('../../private/initialize.php');
-//require(INC_PATH . '/db.inc.php');
-require(PRIVATE_PATH . '/advert.class.php');
 include(INC_PATH . '/header.php');
 ?>
 
