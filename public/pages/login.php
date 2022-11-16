@@ -33,13 +33,13 @@ if (isset($_POST["submit"])) {
 
     //validation of input
     if (empty($_POST["email"])) {
-        $errorArr["email"] = "Epostadresse er påkrevd";
+        $errorArr[] = "Epostadresse er påkrevd";
     } else {
         $email = test_input($_POST["email"]);
     }
 
     if (empty($_POST["password"])) {
-        $errorArr["password"] = "Passord er påkrevd";
+        $errorArr[] = "Passord er påkrevd";
     } else {
         $password = $_POST["password"];
     }
@@ -51,9 +51,7 @@ if (isset($_POST["submit"])) {
         $userResult = $user->userLogin($email);
 
         if ($userResult && password_verify($password, $userResult['user_password'])) {
-            $_SESSION['user_auth'] = "auth";
-            $_SESSION['user_id'] = $userResult['user_firstname'];
-        
+            $session->login($userResult);
         ?>
 
             <div class="container d-flex align-items-center">

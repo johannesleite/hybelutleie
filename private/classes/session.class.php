@@ -6,6 +6,7 @@ class Session {
     private $user_id;
     public $user_email;
     public $user_first_name;
+    public $user_last_name;
 
     public function __construct()
     {
@@ -17,7 +18,7 @@ class Session {
         if ($user) {
             $this->user_id = $_SESSION["user_id"] = $user->id;
             $this->user_email = $_SESSION["user_email"] = $user->email;
-            $this->user_first_name = $_SESSION["user_first_name"] = $user->first_name;
+            $this->user_name = $_SESSION["user_first_name"] = $user->first_name;
         }
         return true;
     }

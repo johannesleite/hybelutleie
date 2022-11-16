@@ -5,8 +5,6 @@ include(INC_PATH . '/header.php');
 
 <!--bootstrap cards with each individual advert-->
 
-
-
         <?php
         $ad = new Advert;
 
@@ -26,12 +24,16 @@ include(INC_PATH . '/header.php');
                             <div class="text-muted">Dato lagt ut: <?php echo $row['ad_timestamp']; ?></div>
                         </div>
                         <p class=""><?php echo nl2br($row['ad_desc']); ?></p>
-                        <p class="">Boligtype: <?php echo $row['ad_residence_type']; ?></p>
+                        <p class="">Boligtype: <?php echo $row['residence_type_name']; ?></p>
                         <p class="">Størrelse: <?php echo $row['ad_size']; ?>kvm</p>
-                        <p class=""><strong>Pris: <?php echo $row['ad_price']; ?>,-</strong></p>
+                        <div class="d-flex justify-content-between">
+                            <p class=""><strong>Pris: <?php echo $row['ad_price']; ?>,-</strong></p>
+                            <p class=""><strong><?php echo $row['user_firstname']; ?></strong></p>
+                        </div>
+
                         <div class="d-flex justify-content-between">
                             <p><?php echo $row['ad_zip'] . ", " . $row['zip_location']; ?></p>
-                                <button type="" name="submit" class="btn btn-primary">Kontakt utleier</button>
+                            <a href="mailto:<?php echo $row['user_email']?>" class="btn btn-primary">Kontakt utleier</a>
                         </div>
                     </div>
 

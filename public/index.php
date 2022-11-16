@@ -26,7 +26,7 @@ include(INC_PATH . '/header.php');
                                 <h5 class="card-title"><?php echo $row['ad_title']; ?></h5>
                                 <div class="text-muted">Dato lagt ut: <?php echo $row['ad_timestamp']; ?></div>
                             </div>
-                            <p class="card-text">Boligtype: <?php echo $row['ad_residence_type']; ?></p>
+                            <p class="card-text">Boligtype: <?php echo $row['residence_type_name']; ?></p>
                             <p class="card-text">Størrelse: <?php echo $row['ad_size']; ?>kvm</p>
                             <p class="card-text"><strong>Pris: <?php echo $row['ad_price']; ?>,-</strong></p>
                             <div class="d-flex justify-content-between">

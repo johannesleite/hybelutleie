@@ -9,7 +9,6 @@ class Advert {
         self::$db = $db;
     }
 
-//INGEN FELT DIN IDIOT
 //bruke advert = new advert og lage queries som har med adverts å gjøre.
     public function adInsertNew ($adTitle, $SQLfilepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode) {
         $stmt = Advert::$db->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -20,9 +19,10 @@ class Advert {
 
     function adSelectAll () {
         
-        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_residence_type, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location 
+        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name 
                 FROM advert
-                LEFT JOIN city ON (advert.ad_zip = city.zip_code)";
+                LEFT JOIN city ON (advert.ad_zip = city.zip_code)
+                LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)";
         
         $result = Advert::$db->query($sql);
 
@@ -31,9 +31,11 @@ class Advert {
 
     function adSelectOne ($adId) {
 
-        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_residence_type, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location 
+        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name, user.user_firstname, user.user_lastname, user.user_email 
                 FROM advert
                 LEFT JOIN city ON (advert.ad_zip = city.zip_code)
+                LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)
+                LEFT JOIN user ON (advert.ad_user_id = user.user_id)
                 WHERE advert.ad_id=?";
         
         $stmt = Advert::$db->prepare($sql); 
@@ -43,4 +45,17 @@ class Advert {
 
         return $result;
     }
+
+    function adSelectSelf () {
+
+    }
+    
+    function adSelectSort () {
+        
+    }
+
+    function adUpdate () {
+        
+    }
+
 }
