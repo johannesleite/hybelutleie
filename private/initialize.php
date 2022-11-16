@@ -1,5 +1,4 @@
 <?php
-    session_start();
     // Assign file paths to PHP constants
     // __FILE__ returns the current path to this file
     // dirname() returns the path to the parent directory
@@ -33,5 +32,7 @@
     $db = connection();
     Advert::set_database($db);
     User::set_database($db);
+
+    $session = new Session;
 
 ?>

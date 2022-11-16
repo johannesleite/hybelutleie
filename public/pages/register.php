@@ -52,7 +52,7 @@ if (isset($_POST["submit"])) {
     } else if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["firstName"])) {
         $errorArr["firstName"] = "Fornavn kan kun inneholde bokstaver";
     } else {
-        $firstName = $_POST["firstName"];
+        $firstName = test_input($_POST["firstName"]);
     }
 
     if (empty($_POST["lastName"])) {
@@ -60,7 +60,7 @@ if (isset($_POST["submit"])) {
     } else if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastName"])) {
         $errorArr["lastName"] = "Etternavn kan kun inneholde bokstaver";
     } else {
-        $lastName = $_POST["lastName"];
+        $lastName = test_input($_POST["lastName"]);
     }
 
     if (empty($_POST["phone"])) {
@@ -68,7 +68,7 @@ if (isset($_POST["submit"])) {
     } else if (!is_numeric($_POST["phone"])) {
         $errorArr["phone"] = "Telefonnummer kan bare inneholde tall";
     } else {
-        $phone = $_POST["phone"];
+        $phone = test_input($_POST["phone"]);
     }
 
     if (empty($_POST["email"])) {
@@ -76,15 +76,14 @@ if (isset($_POST["submit"])) {
     } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
         $errorArr["email"] = "Epostadressen har ugyldig format";
     } else {
-        $email = $_POST["email"];
+        $email = test_input($_POST["email"]);
     }
 
     
     $user = new User;
 
-    $result = $user->userEmailExists($email);
+    $exists = $user->userEmailExists($email);
 
-    $exists = (bool) $stmt->get_result()->fetch_row();
     if ($exists) {
         $errorArr["email"] = "En bruker med denne eposten eksisterer allerede";
     }
@@ -101,13 +100,7 @@ if (isset($_POST["submit"])) {
     //printing of content and inserting into db
     if (empty($errorArr)) {
 
-        //preparing statement, binding parameters to the form data and executing statement before closing it.
-        $stmt = $conn->prepare("INSERT INTO user (user_firstname, user_lastname, user_phone, user_email, user_password) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $firstName, $lastName, $phone, $email, $hashedPassword);
-        $stmt->execute();
-
-        $stmt->close();
-        $conn->close();
+        $user->userRegister($firstName, $lastName, $phone, $email, $hashedPassword);
 ?>
 
         <div class="container d-flex align-items-center">
