@@ -35,7 +35,7 @@ if (isset($_POST["submit"])) {
     if (empty($_POST["email"])) {
         $errorArr["email"] = "Epostadresse er påkrevd";
     } else {
-        $email = $_POST["email"];
+        $email = test_input($_POST["email"]);
     }
 
     if (empty($_POST["password"])) {
@@ -46,14 +46,13 @@ if (isset($_POST["submit"])) {
 
     if (empty($errorArr)) {
 
-        $userInstance = new User();
+        $user = new User();
 
-        $result = $userInstance->userLogin($email);
-        $user = $result->fetch_assoc();
+        $userResult = $user->userLogin($email);
 
-        if ($user && password_verify($password, $user['user_password'])) {
+        if ($userResult && password_verify($password, $userResult['user_password'])) {
             $_SESSION['user_auth'] = "auth";
-            $_SESSION['user_id'] = $user['user_firstname'];
+            $_SESSION['user_id'] = $userResult['user_firstname'];
         
         ?>
 
@@ -68,7 +67,14 @@ if (isset($_POST["submit"])) {
 
         } else {
             //failed
-        }
+            ?>
+            <div class="container d-flex align-items-center">
+                <div class="col-md-4 py-3 mx-auto">
+                    <p><strong>epostadresse og/eller passord er feil, vennligst prøv på nytt.</strong></p>
+                    <?php header("Refresh:5; url=" . urlFor('/index.php')); ?>
+                </div>
+            </div>
+    <?php }
     } else {
 
         ?>

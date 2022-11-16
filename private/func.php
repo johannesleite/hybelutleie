@@ -8,4 +8,13 @@
     return WWW_ROOT . $script_path;
     }
 
+    //clean input data from forms
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        
+        return $data;
+    }
+
 ?>
