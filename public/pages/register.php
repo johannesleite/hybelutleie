@@ -10,12 +10,8 @@ include(INC_PATH . '/header.php');
         <h3>Registrere ny bruker</h3>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-outline mb-1">
-                <label class="form-label" for="firstName">Fornavn</label>
-                <input type="text" name="firstName" id="firstName" class="form-control" />
-            </div>
-            <div class="form-outline mb-1">
-                <label class="form-label" for="lastName">Etternavn</label>
-                <input type="text" name="lastName" id="lastName" class="form-control" />
+                <label class="form-label" for="name">Fullt navn</label>
+                <input type="text" name="name" id="name" class="form-control" />
             </div>
             <div class="form-outline mb-1">
                 <label class="form-label" for="phone">Telefonnummer</label>
@@ -44,23 +40,15 @@ $errorArr = array();
 //runs when form has been submitted
 if (isset($_POST["submit"])) {
 
-    $firstName = $lastName = $phone = $email = $password = $checkPassword = "";
+    $name = $phone = $email = $password = $checkPassword = "";
 
     //validation of input
-    if (empty($_POST["firstName"])) {
-        $errorArr["firstName"] = "Fornavn er påkrevd";
-    } else if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["firstName"])) {
-        $errorArr["firstName"] = "Fornavn kan kun inneholde bokstaver";
+    if (empty($_POST["name"])) {
+        $errorArr["name"] = "Fornavn er påkrevd";
+    } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' ]*$/", $_POST["name"])) {
+        $errorArr["name"] = "Navn kan kun inneholde norske bokstaver og mellomrom";
     } else {
-        $firstName = test_input($_POST["firstName"]);
-    }
-
-    if (empty($_POST["lastName"])) {
-        $errorArr["lastName"] = "Etternavn er påkrevd";
-    } else if (!preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastName"])) {
-        $errorArr["lastName"] = "Etternavn kan kun inneholde bokstaver";
-    } else {
-        $lastName = test_input($_POST["lastName"]);
+        $name = test_input($_POST["name"]);
     }
 
     if (empty($_POST["phone"])) {
@@ -82,7 +70,7 @@ if (isset($_POST["submit"])) {
     
     $user = new User;
 
-    $exists = $user->userEmailExists($email);
+    $exists = $user->user_email_exists($email);
 
     if ($exists) {
         $errorArr["email"] = "En bruker med denne eposten eksisterer allerede";
@@ -100,7 +88,7 @@ if (isset($_POST["submit"])) {
     //printing of content and inserting into db
     if (empty($errorArr)) {
 
-        $user->userRegister($firstName, $lastName, $phone, $email, $hashedPassword);
+        $user->user_register($name, $phone, $email, $hashedPassword);
 ?>
 
         <div class="container d-flex align-items-center">

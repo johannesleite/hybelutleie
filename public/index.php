@@ -11,7 +11,7 @@ include(INC_PATH . '/header.php');
 
         <?php
         $ad = new Advert;
-        $result = $ad->adSelectAll();
+        $result = $ad->ad_select_all();
         while ($row = $result->fetch_assoc()) {
         ?>
 

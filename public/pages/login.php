@@ -48,16 +48,16 @@ if (isset($_POST["submit"])) {
 
         $user = new User();
 
-        $userResult = $user->userLogin($email);
+        $userResult = $user->user_login($email);
 
-        if ($userResult && password_verify($password, $userResult['user_password'])) {
+        if ($userResult && password_verify($password, $userResult['user_hashed_password'])) {
             $session->login($userResult);
         ?>
 
             <div class="container d-flex align-items-center">
                 <div class="col-md-4 py-3 mx-auto">
-                    <p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
-                    <?php header("Refresh:5; url=" . urlFor('/index.php')); ?>
+                    //<p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
+                    <?php header("url=" . urlFor('/index.php')); ?>
                 </div>
             </div>
 

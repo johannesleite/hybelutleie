@@ -5,8 +5,7 @@ class Session {
 
     private $user_id;
     public $user_email;
-    public $user_first_name;
-    public $user_last_name;
+    public $user_name;
 
     public function __construct()
     {
@@ -18,7 +17,7 @@ class Session {
         if ($user) {
             $this->user_id = $_SESSION["user_id"] = $user->id;
             $this->user_email = $_SESSION["user_email"] = $user->email;
-            $this->user_name = $_SESSION["user_first_name"] = $user->first_name;
+            $this->user_name = $_SESSION["user_name"] = $user->name;
         }
         return true;
     }
@@ -31,10 +30,10 @@ class Session {
     public function logout() {
         unset($_SESSION["user_id"]);
         unset($_SESSION["user_email"]);
-        unset($_SESSION["user_first_name"]);
+        unset($_SESSION["user_name"]);
         unset($this->user_id);
         unset($this->user_email);
-        unset($this->user_first_name);
+        unset($this->user_name);
         return true;
     }
 
@@ -42,7 +41,7 @@ class Session {
         if (isset($_SESSION["user_id"])) {
             $this->user_id = $_SESSION["user_id"];
             $this->user_email = $_SESSION["user_email"];
-            $this->user_first_name = $_SESSION["user_first_name"];
+            $this->user_name = $_SESSION["user_name"];
         }
     }
 }

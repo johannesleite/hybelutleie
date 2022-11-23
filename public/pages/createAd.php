@@ -80,7 +80,7 @@ if (isset($_POST["submit"])) {
     }
     
     $ad = new Advert;
-    $ad->adInsertNew($adTitle, $SQLfilepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
+    $ad->ad_insert($adTitle, $SQLfilepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
 
 }
 
