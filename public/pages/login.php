@@ -47,16 +47,16 @@ if (isset($_POST["submit"])) {
     if (empty($errorArr)) {
 
         $user = new User();
-
+        
         $userResult = $user->user_login($email);
-
-        if ($userResult && password_verify($password, $userResult['user_hashed_password'])) {
+var_dump($userResult);
+        if ($userResult != false && password_verify($password, $userResult->user_hashed_password)) {
             $session->login($userResult);
         ?>
 
             <div class="container d-flex align-items-center">
                 <div class="col-md-4 py-3 mx-auto">
-                    //<p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
+                    <p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
                     <?php header("url=" . urlFor('/index.php')); ?>
                 </div>
             </div>
@@ -69,7 +69,7 @@ if (isset($_POST["submit"])) {
             <div class="container d-flex align-items-center">
                 <div class="col-md-4 py-3 mx-auto">
                     <p><strong>epostadresse og/eller passord er feil, vennligst prøv på nytt.</strong></p>
-                    <?php header("Refresh:5; url=" . urlFor('/index.php')); ?>
+                    <?php // header("Refresh:5; url=" . urlFor('/index.php')); ?>
                 </div>
             </div>
     <?php }

@@ -44,5 +44,4 @@
     User::set_database($db);
 
     $session = new Session;
-
 ?>

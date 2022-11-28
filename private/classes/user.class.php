@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../initialize.php');
 
 
-class User extends Database {
+class User {
 
     public $id;
     public $name;
@@ -13,15 +13,15 @@ class User extends Database {
     protected $hashed_password;
     protected $password_required = true;
 
-    public static $db;
+    protected static $db;
 
-    public function __construct($args=[]) {
-        $this->name = $args['name'] ?? '';
-        $this->phone = $args['phone'] ?? '';
-        $this->email = $args['email'] ?? '';
-        $this->password = $args['password'] ?? '';
-        $this->check_password = $args['check_password'] ?? '';
-    }
+    // public function __construct($args=[]) {
+    //     $this->name = $args['name'] ?? '';
+    //     $this->phone = $args['phone'] ?? '';
+    //     $this->email = $args['email'] ?? '';
+    //     $this->password = $args['password'] ?? '';
+    //     $this->check_password = $args['check_password'] ?? '';
+    // }
 
     protected function set_hashed_password() {
         $this->hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
@@ -31,12 +31,10 @@ class User extends Database {
         return password_verify($password, $this->hashed_password);
     }
 
-
-
-    // public static function set_database($db)
-    // {
-    //     self::$db = $db;
-    // }
+    public static function set_database($db)
+    {
+        self::$db = $db;
+    }
 
     function user_login($email)
     {
@@ -45,7 +43,7 @@ class User extends Database {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
+        $user = $result->fetch_object();
 
         return $user;
     }
