@@ -1,13 +1,13 @@
 <?php
 require_once(__DIR__ . '/../initialize.php');
 
-class Advert {
+class Advert extends Database {
 
-    protected static $db;
+    //protected static $db;
 
-    public static function set_database($db) {
-        self::$db = $db;
-    }
+    // public static function set_database($db) {
+    //     self::$db = $db;
+    // }
 
     protected static function instantiate ($record) {
         $object = new self;
@@ -21,7 +21,7 @@ class Advert {
     }
 
     public static function find_by_sql ($sql) {
-        $result = self::$db->query($sql);
+        $result = Database::$db->query($sql);
         if (!$result) {
             exit("Forespørselen feilet, prøv på nytt...");
         }
@@ -54,7 +54,7 @@ class Advert {
                 LEFT JOIN user ON (advert.ad_user_id = user.user_id)
                 WHERE advert.ad_id=?";
         
-        $stmt = self::$db->prepare($sql); 
+        $stmt = Database::$db->prepare($sql); 
         $stmt->bind_param("i", $ad_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -129,7 +129,7 @@ class Advert {
 
     //bruke advert = new advert og lage queries som har med adverts å gjøre.
     public function ad_insert ($ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip) {
-        $stmt = self::$db->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = Database::$db->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssiisi", $ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip);
         $stmt->execute();
     }
@@ -148,7 +148,7 @@ class Advert {
 
     public function ad_update ($ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id) {
         $sql = "UPDATE advert SET ad_title=?, ad_image=?, ad_residence_type=?, ad_desc=?, ad_size=?, ad_price=?, ad_street_address=?, ad_zip=? WHERE ad_id=?";
-        $stmt = self::$db->prepare($sql);
+        $stmt = Database::$db->prepare($sql);
         $stmt->bind_param("ssssiisii", $ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id);
         $stmt->execute();
     }

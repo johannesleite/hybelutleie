@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2022 at 03:20 PM
+-- Generation Time: Nov 28, 2022 at 05:35 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -49,10 +49,10 @@ CREATE TABLE `advert` (
 --
 
 INSERT INTO `advert` (`ad_id`, `ad_title`, `ad_image`, `ad_residence_type`, `ad_desc`, `ad_size`, `ad_price`, `ad_street_address`, `ad_zip`, `ad_status`, `ad_timestamp`, `ad_user_id`) VALUES
-(1, 'nydelig hybel', '/hybelutleie/public/assets/img/159_1414186351.jpg', 1, 'hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg ', 40, 5000, 'veien 1', 4329, 1, '2022-11-07', 1),
-(2, 'rom ved uia', '/hybelutleie/public/assets/img/159_89402933.jpg', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In hendrerit gravida rutrum quisque. Blandit volutpat maecenas volutpat blandit aliquam etiam. Nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Sed augue lacus viverra vitae congue eu.\n\n Curabitur vitae nunc sed velit dignissim sodales ut eu sem. Euismod nisi porta lorem mollis aliquam ut porttitor leo. Morbi tristique senectus et netus et malesuada. Orci ac auctor augue mauris augue neque gravida in fermentum. Congue quisque egestas diam in arcu cursus euismod quis viverra. Ultrices vitae auctor eu augue ut.\n\n Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cras sed felis eget velit aliquet sagittis id consectetur. Viverra tellus in hac habitasse platea dictumst vestibulum. Ornare massa eget egestas purus. Scelerisque felis imperdiet proin fermentum leo. Convallis aenean et tortor at risus viverra adipiscing at.', 11, 5300, 'uiaveien 13', 1313, 1, '2022-11-07', 2),
-(3, 'Rom med utsikt', '/hybelutleie/public/assets/img/159_1743763257.jpg', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 9, 3500, 'Universitetsveien 13', 4630, 1, '2022-11-07', 4),
-(4, 'Hybel ved universitetet i Agder', '/hybelutleie/public/assets/img/159_1107255931.jpg', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa sed elementum tempus egestas sed sed risus.\r\n\r\n Viverra accumsan in nisl nisi scelerisque. Et netus et malesuada fames ac turpis egestas maecenas. A arcu cursus vitae congue. \r\n\r\nCras pulvinar mattis nunc sed blandit. Tortor at auctor urna nunc id cursus metus aliquam. A lacus vestibulum sed arcu non odio euismod lacinia at. Sed blandit libero volutpat sed cras ornare. Quam viverra orci sagittis eu volutpat odio. Mattis rhoncus urna neque viverra justo nec. \r\n\r\nEget mauris pharetra et ultrices neque. Libero nunc consequat interdum varius sit amet.', 45, 6000, 'Kaserneveien 302', 4634, 1, '2022-11-09', 1);
+(1, 'nydelig hybel', '/hybelutleie/public/assets/img/159_1414186351.jpg', 1, 'hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg ', 40, 5000, 'Kaserneveien 8A', 4630, 1, '2022-11-07', 1),
+(2, 'rom ved uia', '/hybelutleie/public/assets/img/159_89402933.jpg', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In hendrerit gravida rutrum quisque. Blandit volutpat maecenas volutpat blandit aliquam etiam. Nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Sed augue lacus viverra vitae congue eu.\n\n Curabitur vitae nunc sed velit dignissim sodales ut eu sem. Euismod nisi porta lorem mollis aliquam ut porttitor leo. Morbi tristique senectus et netus et malesuada. Orci ac auctor augue mauris augue neque gravida in fermentum. Congue quisque egestas diam in arcu cursus euismod quis viverra. Ultrices vitae auctor eu augue ut.\n\n Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cras sed felis eget velit aliquet sagittis id consectetur. Viverra tellus in hac habitasse platea dictumst vestibulum. Ornare massa eget egestas purus. Scelerisque felis imperdiet proin fermentum leo. Convallis aenean et tortor at risus viverra adipiscing at.', 11, 5300, 'Ingerthas vei 5', 4630, 1, '2022-11-07', 2),
+(3, 'Rom med utsikt', '/hybelutleie/public/assets/img/159_1743763257.jpg', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 9, 3500, 'Ronatoppen 46', 4638, 1, '2022-11-07', 4),
+(4, 'Hybel ved universitetet i Agder', '/hybelutleie/public/assets/img/159_1107255931.jpg', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa sed elementum tempus egestas sed sed risus.\r\n\r\n Viverra accumsan in nisl nisi scelerisque. Et netus et malesuada fames ac turpis egestas maecenas. A arcu cursus vitae congue. \r\n\r\nCras pulvinar mattis nunc sed blandit. Tortor at auctor urna nunc id cursus metus aliquam. A lacus vestibulum sed arcu non odio euismod lacinia at. Sed blandit libero volutpat sed cras ornare. Quam viverra orci sagittis eu volutpat odio. Mattis rhoncus urna neque viverra justo nec. \r\n\r\nEget mauris pharetra et ultrices neque. Libero nunc consequat interdum varius sit amet.', 45, 6000, 'Koggeveien 17', 4624, 1, '2022-11-09', 1);
 
 -- --------------------------------------------------------
 
@@ -5239,24 +5239,24 @@ INSERT INTO `residence_type` (`residence_type_id`, `residence_type_name`) VALUES
 
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL,
-  `user_firstname` varchar(255) NOT NULL,
-  `user_lastname` varchar(255) NOT NULL,
+  `user_name` varchar(255) NOT NULL,
   `user_phone` varchar(15) NOT NULL,
   `user_email` varchar(255) NOT NULL,
-  `user_password` varchar(26) NOT NULL
+  `user_hashed_password` varchar(26) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `user_firstname`, `user_lastname`, `user_phone`, `user_email`, `user_password`) VALUES
-(1, 'Joh', 'Lei', '12390432', 'joh@lei.no', '$2y$10$50pWn8RJrSVZupH22UJ'),
-(2, 'asdf', 'sadf', '454654', 'fds@fds.fds', '$2y$10$i/LgDWwthKQnQ0IT8Zq'),
-(3, 'fdsjak', 'fjdsla', '49302', 'kfdldsakf@fdkslokfd.no', '$2y$10$X/Ug.hKaTjkIY3ov7Hk'),
-(4, 'fdsa', 'fdsa', '456', 'fdklsfkdlkf@kfdlskfkk.fdlskf', '$2y$10$v.Hw.1yWQQrNvRQ0uLe'),
-(5, 'Jo', 'Le', '12345678', 'jole@jole.jole', '$2y$10$npzGx7anZ3CBUrcrg52'),
-(6, 'Endre', 'Kvam', '12345678', 'endre@kvam.no', '$2y$10$RDe8.I3JhBgufCZAVUa');
+INSERT INTO `user` (`user_id`, `user_name`, `user_phone`, `user_email`, `user_hashed_password`) VALUES
+(1, 'Johannes Leite', '12390432', 'joh@lei.no', '$2y$10$50pWn8RJrSVZupH22UJ'),
+(2, 'Jens Jensen', '454654', 'fds@fds.fds', '$2y$10$i/LgDWwthKQnQ0IT8Zq'),
+(3, 'fdsjak', '49302', 'kfdldsakf@fdkslokfd.no', '$2y$10$X/Ug.hKaTjkIY3ov7Hk'),
+(4, 'Mons Monsen', '456', 'fdklsfkdlkf@kfdlskfkk.fdlskf', '$2y$10$v.Hw.1yWQQrNvRQ0uLe'),
+(5, 'Nils Nilsen', '12345678', 'jole@jole.jole', '$2y$10$npzGx7anZ3CBUrcrg52'),
+(6, 'Endre Kvam', '12345678', 'endre@kvam.no', '$2y$10$RDe8.I3JhBgufCZAVUa'),
+(7, 'Coca cola', '12345678', 'coca@cola.no', '$2y$10$VOf60eRauY9C2JwVZPU');
 
 --
 -- Indexes for dumped tables
@@ -5303,7 +5303,7 @@ ALTER TABLE `residence_type`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

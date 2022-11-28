@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../initialize.php');
 
 
-class User {
+class User extends Database {
 
     public $id;
     public $name;
@@ -13,7 +13,7 @@ class User {
     protected $hashed_password;
     protected $password_required = true;
 
-    protected static $db;
+    // protected static $db;
 
     // public function __construct($args=[]) {
     //     $this->name = $args['name'] ?? '';
@@ -31,15 +31,15 @@ class User {
         return password_verify($password, $this->hashed_password);
     }
 
-    public static function set_database($db)
-    {
-        self::$db = $db;
-    }
+    // public static function set_database($db)
+    // {
+    //     self::$db = $db;
+    // }
 
-    function user_login($email)
+    public function user_login($email)
     {
 
-        $stmt = User::$db->prepare("SELECT * FROM user WHERE user_email=?");
+        $stmt = Database::$db->prepare("SELECT * FROM user WHERE user_email=?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -48,9 +48,9 @@ class User {
         return $user;
     }
 
-    function user_email_exists($email)
+    public function user_email_exists($email)
     {
-        $stmt = User::$db->prepare("SELECT * FROM user WHERE user_email=?");
+        $stmt = Database::$db->prepare("SELECT * FROM user WHERE user_email=?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = (bool) $stmt->get_result()->fetch_row();
@@ -58,9 +58,9 @@ class User {
         return $result;
     }
 
-    function user_register($name, $phone, $email, $hashedPassword)
+    public function user_register($name, $phone, $email, $hashedPassword)
     {
-        $stmt = User::$db->prepare("INSERT INTO user (user_name, user_phone, user_email, user_hashed_password) VALUES (?, ?, ?, ?)");
+        $stmt = Database::$db->prepare("INSERT INTO user (user_name, user_phone, user_email, user_hashed_password) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $name, $phone, $email, $hashedPassword);
         $stmt->execute();
 

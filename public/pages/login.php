@@ -50,6 +50,8 @@ if (isset($_POST["submit"])) {
         
         $userResult = $user->user_login($email);
 var_dump($userResult);
+echo "<br>$userResult->user_hashed_password<br>";
+echo password_verify($password, $userResult->user_hashed_password);
         if ($userResult != false && password_verify($password, $userResult->user_hashed_password)) {
             $session->login($userResult);
         ?>

@@ -40,8 +40,7 @@
     */
 
     $db = connection();
-    Advert::set_database($db);
-    User::set_database($db);
+    Database::set_database($db);
 
     $session = new Session;
 ?>
