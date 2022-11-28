@@ -39,8 +39,10 @@
     require('user.class.php');
     */
 
+    //set up connection to use in classes
     $db = connection();
     Database::set_database($db);
 
+    //initialize new session object
     $session = new Session;
 ?>

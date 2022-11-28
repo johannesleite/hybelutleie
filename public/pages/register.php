@@ -42,6 +42,8 @@ if (isset($_POST["submit"])) {
 
     $name = $phone = $email = $password = $checkPassword = "";
 
+    
+
     //validation of input
     if (empty($_POST["name"])) {
         $errorArr["name"] = "Fornavn er påkrevd";
