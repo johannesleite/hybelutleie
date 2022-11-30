@@ -58,8 +58,8 @@ if (isset($_POST["submit"])) {
                 <div class="position-absolute top-50 start-50 translate-middle">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
-                    </div> <?php header("Refresh:2; url=" . urlFor('/index.php'));
-                            exit(); ?>
+                    </div>
+                    <?php header("Refresh:2; url=" . url_for('/index.php')); exit(); ?>
                 </div>
         <?php
 
@@ -69,8 +69,6 @@ if (isset($_POST["submit"])) {
             <div class="container d-flex align-items-center">
                 <div class="col-md-4 py-3 mx-auto">
                     <p class="alert alert-danger" role="alert">epostadresse og/eller passord er feil, vennligst prøv på nytt.</p>
-                    <?php // header("Refresh:5; url=" . urlFor('/index.php')); 
-                    ?>
                 </div>
             </div>
         <?php }
@@ -79,7 +77,7 @@ if (isset($_POST["submit"])) {
         ?>
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-danger" role="alert">Vennlist rett opp feilene under og prøv på nytt</p>
+                <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>
                 <ul>
                     <?php foreach ($errorArr as $value) { ?>
                         <li><?php echo $value ?></li>

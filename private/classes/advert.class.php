@@ -128,14 +128,26 @@ class Advert extends Database {
     // }
 
     //bruke advert = new advert og lage queries som har med adverts å gjøre.
-    public function ad_insert ($ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip) {
+    public function ad_insert ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip) {
         $stmt = Database::$db->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssiisi", $ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip);
+        $stmt->bind_param("ssssiisi", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip);
         $stmt->execute();
     }
 
-    function ad_select_self () {
+    public static function ad_select_own ($ad_user_id) {
+        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name, user.user_name, user.user_email 
+                FROM advert
+                LEFT JOIN city ON (advert.ad_zip = city.zip_code)
+                LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)
+                LEFT JOIN user ON (advert.ad_user_id = user.user_id)
+                WHERE advert.ad_user_id=?";
+        
+        $stmt = Database::$db->prepare($sql); 
+        $stmt->bind_param("i", $ad_user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
+        return $result;
     }
     
     // function ad_sort () {
@@ -146,10 +158,10 @@ class Advert extends Database {
     //     ORDER BY ad_price ASC";
     // }
 
-    public function ad_update ($ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id) {
+    public function ad_update ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id) {
         $sql = "UPDATE advert SET ad_title=?, ad_image=?, ad_residence_type=?, ad_desc=?, ad_size=?, ad_price=?, ad_street_address=?, ad_zip=? WHERE ad_id=?";
         $stmt = Database::$db->prepare($sql);
-        $stmt->bind_param("ssssiisii", $ad_title, $SQLfilepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id);
+        $stmt->bind_param("ssssiisii", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id);
         $stmt->execute();
     }
 

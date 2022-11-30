@@ -46,8 +46,6 @@ if (isset($_POST["submit"])) {
    $password = test_input($_POST["password"]) ?? '';
    $check_password = test_input($_POST["check_password"]) ?? '';
 
-
-
     //validation of input
     if (empty($name)) {
         $errorArr[] = "Navn er påkrevd";
@@ -98,15 +96,14 @@ if (isset($_POST["submit"])) {
     if (empty($errorArr)) {
 
         $user->user_register($name, $phone, $email, $hashed_password);
-?>
-
+    ?>
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
                 <p class="alert alert-success" role="alert">Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!</p>
-                <?php header("Refresh:3; url=" . urlFor('/pages/login.php')); ?>
+                
             </div>
+            <?php header("Refresh:3; url=" . url_for('/pages/login.php')); exit(); ?>
         </div>
-
     <?php
     } else {
 
@@ -114,7 +111,7 @@ if (isset($_POST["submit"])) {
 
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-danger" role="alert">Vennlist rett opp feilene under og prøv på nytt</p>
+                <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>
                 <ul>
                     <?php foreach ($errorArr as $value) { ?>
                         <li><?php echo $value ?></li>

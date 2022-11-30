@@ -1,5 +1,5 @@
 <?php
-require_once('../private/initialize.php');
+require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 ?>
 
@@ -8,19 +8,10 @@ include(INC_PATH . '/header.php');
     <div class="container d-flex align-items-center">
     <!--d-flex align-items-center-->
         <div class="col-lg-10 mx-auto">
-        <form action="" method="get">
-            <select name="filter">
-                <option value="" disabled selected>Filtrere</option>
-                <option value="priceAsc">pris lav-høy</option>
-                <option value="priceDesc">pris høy-lav</option>
-                <option value="dateAdded">dato lagt ut</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Filtrér</button>
-        </form>
 
         <?php
         
-        $ads = Advert::ad_select_all();
+        $ads = Advert::ad_select_own(2);
 
          foreach ($ads as $ad) {
          ?>

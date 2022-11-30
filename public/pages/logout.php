@@ -3,4 +3,4 @@
 
     $session->logout();
  
-	header('location:'.PUBLIC_PATH .'/index.php');
+	header('location:'.url_for('/pages/login.php'));
