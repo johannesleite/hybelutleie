@@ -47,39 +47,39 @@ if (isset($_POST["submit"])) {
     if (empty($errorArr)) {
 
         $user = new User();
-        
+
         //check if pa
         $userResult = $user->user_email_check($email);
 
         if ($userResult && password_verify($password, $userResult->user_hashed_password)) {
             $session->login($userResult);
-        ?>
+?>
 
-            <div class="container d-flex align-items-center">
-                <div class="col-md-4 py-3 mx-auto">
-                    <p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
-                    <?php header("url=" . urlFor('/index.php')); ?>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div> <?php header("Refresh:2; url=" . urlFor('/index.php'));
+                            exit(); ?>
                 </div>
-            </div>
-
         <?php
 
         } else {
             //failed
-            ?>
+        ?>
             <div class="container d-flex align-items-center">
                 <div class="col-md-4 py-3 mx-auto">
-                    <p><strong>epostadresse og/eller passord er feil, vennligst prøv på nytt.</strong></p>
-                    <?php // header("Refresh:5; url=" . urlFor('/index.php')); ?>
+                    <p class="alert alert-danger" role="alert">epostadresse og/eller passord er feil, vennligst prøv på nytt.</p>
+                    <?php // header("Refresh:5; url=" . urlFor('/index.php')); 
+                    ?>
                 </div>
             </div>
-    <?php }
+        <?php }
     } else {
 
         ?>
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
-                <p style="color: red; font-weight: bold;">Vennlist rett opp feilene under og prøv på nytt</p>
+                <p class="alert alert-danger" role="alert">Vennlist rett opp feilene under og prøv på nytt</p>
                 <ul>
                     <?php foreach ($errorArr as $value) { ?>
                         <li><?php echo $value ?></li>

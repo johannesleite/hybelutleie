@@ -19,9 +19,6 @@
 
     //insert iframe with address map in ad
     function api_address_map ($streetAddr, $zipcode) {      
-        
-        
-
         $streetAddr = preg_replace('/\s+/', '+', $streetAddr);
     
         $apiAddr = "$streetAddr,+$zipcode";
@@ -36,6 +33,4 @@
     
         echo $showMap;
     }
-// width="300"
-//             height="200"
 ?>

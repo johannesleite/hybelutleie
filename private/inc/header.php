@@ -35,7 +35,7 @@ require_once(__DIR__ . '/../initialize.php');
                         </li>
                         <div class="">
                             <a class="btn btn-outline-primary btn-sm me-2" href="<?php echo urlFor('/pages/register.php'); ?>"><i class="fa-solid fa-user"></i>Min Profil</a>
-                            <a class="btn btn-primary btn-sm" href="<?php echo $session->logout(); ?>">Logg ut</a>
+                            <a class="btn btn-primary btn-sm" href="<?php echo urlFor('/pages/register.php'); ?>">Logg ut</a>
                         </div>
                         <?php } else { ?>
                         <div class="">

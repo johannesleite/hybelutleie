@@ -2,12 +2,7 @@
 
 function connection ()
 {
-    $servername = 'localhost';
-    $user = 'root';
-    $password = '';
-    $db = 'hybelprosjektutkast';
-
-    $conn = new mysqli($servername, $user, $password, $db);
+    $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
     if ($conn->connect_errno) {
         echo "failed to connect to MySQL: " . $conn->connect_error;
