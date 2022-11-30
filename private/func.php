@@ -1,7 +1,7 @@
 <?php
 
     //function to get absolute root
-    function urlFor($script_path) {
+    function url_for($script_path) {
     if($script_path[0] != '/') {
         $script_path = "/" . $script_path;
     }
@@ -18,13 +18,10 @@
     }
 
     //insert iframe with address map in ad
-    function api_address_map ($streetAddr, $zipcode) {      
-        
-        
-
+    function api_address_map ($streetAddr, $ad_zip) {      
         $streetAddr = preg_replace('/\s+/', '+', $streetAddr);
     
-        $apiAddr = "$streetAddr,+$zipcode";
+        $apiAddr = "$streetAddr,+$ad_zip";
     
         $showMap = '
         <iframe
@@ -36,6 +33,4 @@
     
         echo $showMap;
     }
-// width="300"
-//             height="200"
 ?>

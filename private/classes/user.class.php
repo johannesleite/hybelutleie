@@ -54,13 +54,12 @@ class User extends Database {
         return $result;
     }
 
-    public function user_register($name, $phone, $email, $hashedPassword)
+    public function user_register($name, $phone, $email, $hashed_password)
     {
         $stmt = Database::$db->prepare("INSERT INTO user (user_name, user_phone, user_email, user_hashed_password) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $name, $phone, $email, $hashedPassword);
+        $stmt->bind_param("ssss", $name, $phone, $email, $hashed_password);
         $stmt->execute();
 
         $stmt->close();
-
     }
 }
