@@ -24,8 +24,10 @@ include(INC_PATH . '/header.php');
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_residence_type">Hva leies ut</label>
                 <select class="form-select" name="ad_residence_type" id="ad_residence_type">
+                    <option value="empty">...</option>
                     <option value="hybel">Hybel</option>
                     <option value="rom i kollektiv">Rom i kollektiv</option>
+                    <option value="leilighet">Leilighet</option>
                 </select>
             </div>
             <div class="form-outline mb-3">
