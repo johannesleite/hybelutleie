@@ -33,13 +33,13 @@ if (isset($_POST["submit"])) {
 
     //validation of input
     if (empty($_POST["email"])) {
-        $errorArr["email"] = "Epostadresse er påkrevd";
+        $errorArr[] = "Epostadresse er påkrevd";
     } else {
         $email = test_input($_POST["email"]);
     }
 
     if (empty($_POST["password"])) {
-        $errorArr["password"] = "Passord er påkrevd";
+        $errorArr[] = "Passord er påkrevd";
     } else {
         $password = $_POST["password"];
     }
@@ -47,19 +47,19 @@ if (isset($_POST["submit"])) {
     if (empty($errorArr)) {
 
         $user = new User();
-
-        $userResult = $user->userLogin($email);
-
-        if ($userResult && password_verify($password, $userResult['user_password'])) {
-            $_SESSION['user_auth'] = "auth";
-            $_SESSION['user_id'] = $userResult['user_firstname'];
         
+        $userResult = $user->user_login($email);
+var_dump($userResult);
+echo "<br>$userResult->user_hashed_password<br>";
+echo password_verify($password, $userResult->user_hashed_password);
+        if ($userResult != false && password_verify($password, $userResult->user_hashed_password)) {
+            $session->login($userResult);
         ?>
 
             <div class="container d-flex align-items-center">
                 <div class="col-md-4 py-3 mx-auto">
                     <p><strong>Innlogging vellykket, du blir videresendt til hjemmesiden</strong></p>
-                    <?php header("Refresh:5; url=" . urlFor('/index.php')); ?>
+                    <?php header("url=" . urlFor('/index.php')); ?>
                 </div>
             </div>
 
@@ -71,7 +71,7 @@ if (isset($_POST["submit"])) {
             <div class="container d-flex align-items-center">
                 <div class="col-md-4 py-3 mx-auto">
                     <p><strong>epostadresse og/eller passord er feil, vennligst prøv på nytt.</strong></p>
-                    <?php header("Refresh:5; url=" . urlFor('/index.php')); ?>
+                    <?php // header("Refresh:5; url=" . urlFor('/index.php')); ?>
                 </div>
             </div>
     <?php }

@@ -17,4 +17,25 @@
         return $data;
     }
 
+    //insert iframe with address map in ad
+    function api_address_map ($streetAddr, $zipcode) {      
+        
+        
+
+        $streetAddr = preg_replace('/\s+/', '+', $streetAddr);
+    
+        $apiAddr = "$streetAddr,+$zipcode";
+    
+        $showMap = '
+        <iframe
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed/v1/place?key='.API_KEY.'&q='.$apiAddr.'"
+            allowfullscreen>
+        </iframe>
+        ';
+    
+        echo $showMap;
+    }
+// width="300"
+//             height="200"
 ?>

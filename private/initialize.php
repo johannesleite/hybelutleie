@@ -16,8 +16,10 @@
     define("WWW_ROOT", $doc_root);
 
     require_once('func.php');
+    require_once('credentials.php');
     require_once('dbConnection.php');
 
+    //for å autoinkludere alle klasser
     foreach (glob('classes/*.class.php') as $file) {
         require_once($file);
     }
@@ -29,10 +31,18 @@
       }
       spl_autoload_register('my_autoload');
 
+
+    //kan også:
+    /* 
+    require('session.class.php');
+    require('advert.class.php');
+    require('user.class.php');
+    */
+
+    //set up connection to use in classes
     $db = connection();
-    Advert::set_database($db);
-    User::set_database($db);
+    Database::set_database($db);
 
+    //initialize new session object
     $session = new Session;
-
 ?>

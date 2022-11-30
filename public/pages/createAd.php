@@ -59,13 +59,13 @@ if (isset($_POST["submit"])) {
     $adTitle = $adResidenceType = $adDescription  = $streetAddress = '';
     $adSize = $price = $zipcode = '';
 
-    $adTitle = $_POST["adTitle"];
-    $adResidenceType = $_POST["adResidenceType"];
-    $adDescription = $_POST["adDescription"];
-    $adSize = $_POST["adSize"];
-    $price = $_POST["price"];
-    $streetAddress = $_POST["streetAddress"];
-    $zipcode = $_POST["zipcode"];
+    $adTitle = $_POST["adTitle"] ?? '';
+    $adResidenceType = $_POST["adResidenceType"] ?? '';
+    $adDescription = $_POST["adDescription"] ?? '';
+    $adSize = $_POST["adSize"] ?? '';
+    $price = $_POST["price"] ?? '';
+    $streetAddress = $_POST["streetAddress"] ?? '';
+    $zipcode = $_POST["zipcode"] ?? '';
 
     $dir = $_SERVER['DOCUMENT_ROOT'].'/hybelutleie/public/assets/img/';
     $imageFilename = $_FILES["imageFilename"]["name"];
@@ -80,7 +80,7 @@ if (isset($_POST["submit"])) {
     }
     
     $ad = new Advert;
-    $ad->adInsertNew($adTitle, $SQLfilepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
+    $ad->ad_insert($adTitle, $SQLfilepath, $adResidenceType, $adDescription, $adSize, $price, $streetAddress, $zipcode);
 
 }
 
