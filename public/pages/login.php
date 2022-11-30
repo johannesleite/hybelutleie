@@ -48,11 +48,10 @@ if (isset($_POST["submit"])) {
 
         $user = new User();
         
-        $userResult = $user->user_login($email);
-var_dump($userResult);
-echo "<br>$userResult->user_hashed_password<br>";
-echo password_verify($password, $userResult->user_hashed_password);
-        if ($userResult != false && password_verify($password, $userResult->user_hashed_password)) {
+        //check if pa
+        $userResult = $user->user_email_check($email);
+
+        if ($userResult && password_verify($password, $userResult->user_hashed_password)) {
             $session->login($userResult);
         ?>
 

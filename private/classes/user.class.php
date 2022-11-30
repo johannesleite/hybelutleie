@@ -31,14 +31,9 @@ class User extends Database {
         return password_verify($password, $this->hashed_password);
     }
 
-    // public static function set_database($db)
-    // {
-    //     self::$db = $db;
-    // }
-
-    public function user_login($email)
+    //returns user object if email exists
+    public function user_email_check($email)
     {
-
         $stmt = Database::$db->prepare("SELECT * FROM user WHERE user_email=?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -48,6 +43,7 @@ class User extends Database {
         return $user;
     }
 
+    //returns a boolean value if email exists
     public function user_email_exists($email)
     {
         $stmt = Database::$db->prepare("SELECT * FROM user WHERE user_email=?");
