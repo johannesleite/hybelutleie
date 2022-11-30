@@ -3,4 +3,4 @@
 
     $session->logout();
  
-	header('location:'.url_for('/pages/login.php'));
+	header('location:'.url_for('/index.php'));
