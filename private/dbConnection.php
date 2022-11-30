@@ -4,7 +4,7 @@ function connection ()
 {
     $servername = 'localhost';
     $user = 'root';
-    $password = '1235';
+    $password = '';
     $db = 'hybelprosjektutkast';
 
     $conn = new mysqli($servername, $user, $password, $db);
