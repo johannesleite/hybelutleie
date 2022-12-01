@@ -1,5 +1,4 @@
 <?php
-
     // Assign file paths to PHP constants
     // __FILE__ returns the current path to this file
     // dirname() returns the path to the parent directory
@@ -17,4 +16,33 @@
     define("WWW_ROOT", $doc_root);
 
     require_once('func.php');
+    require_once('credentials.php');
+    require_once('dbConnection.php');
+
+    //for å autoinkludere alle klasser
+    foreach (glob('classes/*.class.php') as $file) {
+        require_once($file);
+    }
+
+    function my_autoload($class) {
+        if(preg_match('/\A\w+\Z/', $class)) {
+          include('classes/' . $class . '.class.php');
+        }
+      }
+      spl_autoload_register('my_autoload');
+
+
+    //kan også:
+    /* 
+    require('session.class.php');
+    require('advert.class.php');
+    require('user.class.php');
+    */
+
+    //set up connection to use in classes
+    $db = connection();
+    Database::set_database($db);
+
+    //initialize new session object
+    $session = new Session;
 ?>
