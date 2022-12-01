@@ -61,6 +61,14 @@
         echo $error_text;
     }
 
+    function show_success_message($success_msg) {
+        echo 
+        '<div class="container d-flex align-items-center">
+            <div class="col-md-4 py-3 mx-auto">
+                <p class="alert alert-success" role="alert">'. $success_msg. '</p>
+            </div>
+        </div>';
+    }
 
 
 ?>
