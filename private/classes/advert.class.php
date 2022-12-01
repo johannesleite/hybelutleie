@@ -134,7 +134,8 @@ class Advert extends Database {
         $stmt->execute();
     }
 
-    public static function ad_select_own ($ad_user_id) {
+    //On myAds.php to see own ads
+    public function ad_select_own ($ad_user_id) {
         $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name, user.user_name, user.user_email 
                 FROM advert
                 LEFT JOIN city ON (advert.ad_zip = city.zip_code)

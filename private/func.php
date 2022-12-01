@@ -33,4 +33,14 @@
     
         echo $showMap;
     }
+
+    function require_login() {
+        global $session;
+        if(!$session->is_logged_in()) {
+            header('location:'.url_for('/index.php'));
+        } 
+        // else {
+        //   // Do nothing, let the rest of the page proceed
+        // }
+    }
 ?>

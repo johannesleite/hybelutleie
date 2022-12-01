@@ -3,7 +3,7 @@ require_once(__DIR__ . "/../initialize.php");
 
 class Session {
 
-    private $user_id;
+    public $user_id;
     public $user_email;
     public $user_name;
 
