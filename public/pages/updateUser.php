@@ -50,73 +50,59 @@ if (isset($_POST["submit"])) {
     $user_password = test_input($_POST["user_password"]) ?? '';
     $user_check_password = test_input($_POST["user_check_password"]) ?? '';
  
-     //validation of input
-     if (empty($user_name)) {
-         $errorArr[] = "Navn er påkrevd";
-     } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name)) {
-         $errorArr[] = "Navn kan kun inneholde norske bokstaver og mellomrom";
-     }
- 
-     if (empty($user_phone)) {
-         $errorArr[] = "Telefonnummer er påkrevd";
-     } else if (!is_numeric($user_phone)) {
-         $errorArr[] = "Telefonnummer kan bare inneholde tall";
-     }
- 
-     if (empty($user_email)) {
-         $errorArr[] = "Epostadresse er påkrevd";
-     } else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-         $errorArr[] = "Epostadressen har ugyldig format";
-     } 
-     
-     //creates a new user object
-     $user = new User;
- 
-     $exists = $user->user_email_exists($user_email);
- 
-     if ($exists) {
-         $errorArr[] = "En bruker med denne eposten eksisterer allerede";
-     }
- 
-     if (empty($user_password) || empty($user_check_password)) {
-         $errorArr[] = "Passord er påkrevd";
-     } else if ( $user_password != $user_check_password) {
-         $errorArr[] = "Passord og gjentatt passord er ikke like";
-     } else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $user_password) ) {
-         $errorArr[] = "Passordet må være minst 8 tegn og ha minst én stor bokstav, én liten bokstav og ett tall";
-     } else
-         $user_hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
- 
-     //printing of content and inserting into db
-     if (empty($errorArr)) {
- 
-         $user->user_register($user_name, $user_phone, $user_email, $user_hashed_password);
-     ?>
-         <div class="container d-flex align-items-center">
-             <div class="col-md-4 py-3 mx-auto">
-                 <p class="alert alert-success" role="alert">Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!</p>
-                 
-             </div>
-             <?php header("Refresh:3; url=" . url_for('/pages/login.php')); exit(); ?>
-         </div>
-     <?php
-     } else {
- 
-     ?>
- 
-         <div class="container d-flex align-items-center">
-             <div class="col-md-4 py-3 mx-auto">
-                 <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>
-                 <ul>
-                     <?php foreach ($errorArr as $value) { ?>
-                         <li><?php echo $value ?></li>
-                     <?php } ?>
-                 </ul>
-             </div>
-         </div>
- <?php
- 
-     }
+    //validation of input
+    if (empty($user_name)) {
+        $errorArr[] = "Navn er påkrevd";
+    } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name)) {
+        $errorArr[] = "Navn kan kun inneholde norske bokstaver og mellomrom";
+    }
+
+    if (empty($user_phone)) {
+        $errorArr[] = "Telefonnummer er påkrevd";
+    } else if (!is_numeric($user_phone)) {
+        $errorArr[] = "Telefonnummer kan bare inneholde tall";
+    }
+
+    if (empty($user_email)) {
+        $errorArr[] = "Epostadresse er påkrevd";
+    } else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+        $errorArr[] = "Epostadressen har ugyldig format";
+    } 
+    
+    //creates a new user object
+    $user = new User;
+
+    $exists = $user->user_email_exists($user_email);
+
+    if ($exists) {
+        $errorArr[] = "En bruker med denne eposten eksisterer allerede";
+    }
+
+    if (empty($user_password) || empty($user_check_password)) {
+        $errorArr[] = "Passord er påkrevd";
+    } else if ( $user_password != $user_check_password) {
+        $errorArr[] = "Passord og gjentatt passord er ikke like";
+    } else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $user_password) ) {
+        $errorArr[] = "Passordet må være minst 8 tegn og ha minst én stor bokstav, én liten bokstav og ett tall";
+    } else
+        $user_hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
+
+    //printing of content and inserting into db
+    if (empty($errorArr)) {
+
+        $user->user_register($user_name, $user_phone, $user_email, $user_hashed_password);
+    ?>
+        <div class="container d-flex align-items-center">
+            <div class="col-md-4 py-3 mx-auto">
+                <p class="alert alert-success" role="alert">Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!</p>
+                
+            </div>
+            <?php header("Refresh:3; url=" . url_for('/pages/login.php')); exit(); ?>
+        </div>
+    <?php
+    } else {
+        show_error_messages($errorArr);
+    }
  }
  
  include(INC_PATH . '/footer.php');
