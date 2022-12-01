@@ -97,21 +97,7 @@ if (isset($_POST["submit"])) {
         </div>
     <?php
     } else {
-
-    ?>
-
-        <div class="container d-flex align-items-center">
-            <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>
-                <ul>
-                    <?php foreach ($errorArr as $value) { ?>
-                        <li><?php echo $value ?></li>
-                    <?php } ?>
-                </ul>
-            </div>
-        </div>
-<?php
-
+        show_error_messages($errorArr);
     }
 }
 
