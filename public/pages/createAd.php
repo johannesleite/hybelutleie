@@ -6,7 +6,7 @@ include(INC_PATH . '/header.php');
 <!--login form-->
 
 <div class="container text-center my-2">
-    <h3>Legg til ditt utleieobjekt</h3>
+    <h3>Fyll ut annonseskjema</h3>
 </div>
 
 <div class="container d-flex align-items-center my-5">
@@ -112,19 +112,20 @@ if (isset($_POST["submit"])) {
     if (empty($error_arr)) {
         $ad = new Advert;
         $ad->ad_insert($ad_title, 
-                       $sql_filepath, 
-                       $ad_residence_type,
-                       $ad_desc, 
-                       $ad_size,
-                       $ad_price, 
-                       $ad_street_address, 
-                       $ad_zip);
+                    $sql_filepath, 
+                    $ad_residence_type,
+                    $ad_desc, 
+                    $ad_size,
+                    $ad_price, 
+                    $ad_street_address, 
+                    $ad_zip,
+                    $session->user_id);
 ?>
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
                 <p class="alert alert-success" role="alert">Din annonse har blitt opprettet, du blir videresendt til innloggingssiden!</p>
             </div>
-            <?php header("Refresh:3; url=" . url_for('/pages/login.php')); exit(); ?>
+            <?php header("Refresh:3; url=" . url_for('/pages/login.php')); exit();?>
         </div>
     <?php
     } else {

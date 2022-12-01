@@ -128,9 +128,9 @@ class Advert extends Database {
     // }
 
     //bruke advert = new advert og lage queries som har med adverts å gjøre.
-    public function ad_insert ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip) {
-        $stmt = Database::$db->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssiisi", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip);
+    public function ad_insert ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_user_id) {
+        $stmt = Database::$db->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip, ad_user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssiisii", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_user_id);
         $stmt->execute();
     }
 
