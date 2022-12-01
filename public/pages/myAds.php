@@ -1,6 +1,7 @@
 <?php
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
+require_login();
 ?>
 
 <!--bootstrap cards with each individual advert-->
@@ -13,7 +14,7 @@ include(INC_PATH . '/header.php');
         
         $ads = new Advert();
 
-        $userAds = $ads->ad_select_own($_SESSION['user_id']);
+        $userAds = $ads->ad_select_own($session->user_id);
 
         while ($row = $userAds->fetch_object()) {
          ?>

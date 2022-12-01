@@ -11,23 +11,23 @@ include(INC_PATH . '/header.php');
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-outline mb-1">
                 <label class="form-label" for="name">Fullt navn</label>
-                <input type="text" name="name" id="name" class="form-control" />
+                <input type="text" name="user_name" id="name" class="form-control" />
             </div>
             <div class="form-outline mb-1">
                 <label class="form-label" for="phone">Telefonnummer</label>
-                <input type="text" name="phone" id="phone" class="form-control" />
+                <input type="text" name="user_phone" id="phone" class="form-control" />
             </div>
             <div class="form-outline mb-1">
                 <label class="form-label" for="email">Epostadresse</label>
-                <input type="email" name="email" id="email" class="form-control" />
+                <input type="email" name="user_email" id="email" class="form-control" />
             </div>
             <div class="form-outline mb-2">
                 <label class="form-label" for="password">Passord (Minst 8 tegn)</label>
-                <input type="password" name="password" id="password" class="form-control" />
+                <input type="password" name="user_password" id="password" class="form-control" />
             </div>
             <div class="form-outline mb-2">
                 <label class="form-label" for="check_password">Gjenta passord</label>
-                <input type="password" name="check_password" id="check_password" class="form-control" />
+                <input type="password" name="user_check_password" id="check_password" class="form-control" />
             </div>
             <button type="submit" name="submit" class="btn btn-primary">Registrer</button>
         </form>
@@ -40,62 +40,53 @@ $errorArr = array();
 //runs when form has been submitted
 if (isset($_POST["submit"])) {
 
-   $name = test_input($_POST['name']) ?? '';
-   $phone = test_input($_POST["phone"]) ?? '';
-   $email = test_input($_POST["email"]) ?? '';
-   $password = test_input($_POST["password"]) ?? '';
-   $check_password = test_input($_POST["check_password"]) ?? '';
+   $user_name = test_input($_POST["user_name"]) ?? '';
+   $user_phone = test_input($_POST["user_phone"]) ?? '';
+   $user_email = test_input($_POST["user_email"]) ?? '';
+   $user_password = test_input($_POST["user_password"]) ?? '';
+   $user_check_password = test_input($_POST["user_check_password"]) ?? '';
 
     //validation of input
-    if (empty($name)) {
+    if (empty($user_name)) {
         $errorArr[] = "Navn er påkrevd";
-    } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $name)) {
+    } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name)) {
         $errorArr[] = "Navn kan kun inneholde norske bokstaver og mellomrom";
     }
-    // else {
-    //     $name = test_input($_POST["name"]);
-    // }
 
-    if (empty($phone)) {
+    if (empty($user_phone)) {
         $errorArr[] = "Telefonnummer er påkrevd";
-    } else if (!is_numeric($_POST["phone"])) {
+    } else if (!is_numeric($user_phone)) {
         $errorArr[] = "Telefonnummer kan bare inneholde tall";
     }
-    //  else {
-    //     $phone = test_input($_POST["phone"]);
-    // }
 
-    if (empty($email)) {
+    if (empty($user_email)) {
         $errorArr[] = "Epostadresse er påkrevd";
-    } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+    } else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
         $errorArr[] = "Epostadressen har ugyldig format";
     } 
-    // else {
-    //     $email = test_input($_POST["email"]);
-    // }
     
     //creates a new user object
     $user = new User;
 
-    $exists = $user->user_email_exists($email);
+    $exists = $user->user_email_exists($user_email);
 
     if ($exists) {
         $errorArr[] = "En bruker med denne eposten eksisterer allerede";
     }
 
-    if (empty($password) || empty($check_password)) {
+    if (empty($user_password) || empty($user_check_password)) {
         $errorArr[] = "Passord er påkrevd";
-    } else if ( $password != $check_password) {
+    } else if ( $user_password != $user_check_password) {
         $errorArr[] = "Passord og gjentatt passord er ikke like";
-    } else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $password) ) {
+    } else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $user_password) ) {
         $errorArr[] = "Passordet må være minst 8 tegn og ha minst én stor bokstav, én liten bokstav og ett tall";
     } else
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $user_hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 
     //printing of content and inserting into db
     if (empty($errorArr)) {
 
-        $user->user_register($name, $phone, $email, $hashed_password);
+        $user->user_register($user_name, $user_phone, $user_email, $user_hashed_password);
     ?>
         <div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
