@@ -47,10 +47,10 @@ if (isset($_POST["submit"])) {
         $user = new User();
 
         //check if pa
-        $userResult = $user->user_email_check($user_email);
+        $user_result = $user->user_email_check($user_email);
 
-        if ($userResult && password_verify($user_password, $userResult->user_hashed_password)) {
-            $session->login($userResult);
+        if ($user_result && password_verify($user_password, $user_result->user_hashed_password)) {
+            $session->login($user_result);
 ?>
 
                 <div class="position-absolute top-50 start-50 translate-middle">
