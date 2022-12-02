@@ -1,11 +1,10 @@
 <?php
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
-
-$error_arr = array();
+require_login();
 
 if (isset($_POST["submit"])) {
-
+    //bind user input to variables
     $ad_title = test_input($_POST["ad_title"]) ?? '';
     $ad_residence_type = test_input($_POST["ad_residence_type"]) ?? null;
     $ad_desc = test_input($_POST["ad_desc"]) ?? '';
@@ -14,76 +13,55 @@ if (isset($_POST["submit"])) {
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
     $ad_zip = test_input($_POST["ad_zip"]) ?? null;
 
+    //file info
+    $image_filename = $_FILES["image"]["name"];
+    $temp_filename = $_FILES["image"]["tmp_name"];
+    $file_type = $_FILES['image']['type'];
+
+    //configurations
     $dir = $_SERVER['DOCUMENT_ROOT'].'/hybelutleie/public/assets/img/';
-    $image_filename = $_FILES["image_filename"]["name"];
     $sql_filepath = url_for('/assets/img/').$image_filename;
-    $temp_filename = $_FILES["image_filename"]["tmp_name"];
+    $accepted_file_types = array("jpg" => "image/jpeg",
+                                 "png" => "image/png");
 
-    /* Input validation */
-    if (empty($ad_title)){
-        $error_arr[] = "Tittel er påkrevd";
-    }
-    
-    if (empty($ad_residence_type)) {
-        $error_arr[] = "Velg boligtype";
-    }
-
-    if (empty($ad_desc)) {
-        $error_arr[] = "Beskrivelse er påkrevd";
-    }
-
-    if (empty($ad_size)) {
-        $error_arr[] = "Størrelse er påkrevd";
-    } else if (!is_numeric($ad_size)) {
-        $error_arr[] = "Størrelse må beskrives i tall";
+    //no directory with that name?
+    if(!file_exists($dir)) 
+        {
+            if (!mkdir($dir, 0777, true)) 
+                die("Cannot create directory..." . $dir);
         }
     
-    if (empty($ad_price)) {
-        $error_arr[] = "Pris er påkrevd";
-    } else if (!is_numeric($ad_price)) {
-        $error_arr[] = "Størrelse må beskrives i tall";
-        }    
+    //finding suffix
+    $suffix = array_search($file_type, $accepted_file_types);
+
+    //if filename exists
+    do 
+        $filename = substr(md5(date('YmdHis')), 0, 5). '.'. $suffix;
+    while(file_exists($dir. $filename));
+
+    //input validation & error messages
+    $img_error_arr = validate_img();
+    $error_arr = validate_ad_input($ad_title, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip);
+    if (!empty($img_error_arr))
+        $error_arr = array_merge($error_arr, $img_error_arr); 
     
-    if (empty($ad_street_address)){
-        $error_arr[] = "Adresse er påkrevd";
-    }    
-
-    if (empty($ad_zip)) {
-        $error_arr[] = "Postnummer er påkrevd";
-    } else if (strlen($ad_zip != 4 && !is_numeric($ad_zip))) {
-        $error_arr[] = "Postnummer må være fire tall";
-    }
-
-    /* Save user input into database*/
+    //save user input to database
     if (empty($error_arr)) {
         $ad = new Advert;
-        $ad->ad_insert($ad_title, 
-                    $sql_filepath, 
-                    $ad_residence_type,
-                    $ad_desc, 
-                    $ad_size,
-                    $ad_price, 
-                    $ad_street_address, 
-                    $ad_zip,
-                    $session->user_id);
-?>
-        <div class="container d-flex align-items-center">
-            <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-success" role="alert">Din annonse har blitt opprettet, du blir videresendt til startsiden</p>
-            </div>
-            <?php header("Refresh:3; url=" . url_for('/pages/index.php')); exit(); ?>
-        </div>
-    <?php
-    } else {
-        show_error_messages($error_arr);
-    }
-    // if (is_uploaded_file($temp_filename)) {
-    //     move_uploaded_file($temp_filename, $dir.$image_filename);
-    //     echo "<script>alert(\"Annonsen ble lastet opp!\")</script>";
-    // } else {
-    //     echo "Filen finnes ikke, prøv på nytt";
-    // }
-    
+        $ad->ad_insert($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
+                        $ad_price, $ad_street_address, $ad_zip, $session->user_id);  
+        
+        //save img to database
+        if (is_uploaded_file($temp_filename))
+        move_uploaded_file($temp_filename, $dir.$image_filename);
+        
+        //display successful message
+        display_success_message("Din annonse har blitt opprettet, du blir videresendt til hjemmesiden");
+        header("Refresh:3; url=" . url_for('/index.php')); exit(); 
+    } 
+        //display error message
+    else 
+        display_error_messages($error_arr);
 
 }
 ?>
@@ -102,8 +80,8 @@ if (isset($_POST["submit"])) {
                 <input type="text" name="ad_title" id="ad_title" class="form-control" />
             </div>
             <div class="mb-3">
-                <label for="image_filename" class="form-label">Legg til bilder (Kun .jpg- eller .jpeg-format)</label>
-                <input class="form-control" type="file" name="image_filename" id="image_filename" multiple>
+                <label for="image_filename" class="form-label">Legg til bilder (Kun .jpg- eller .png-format)</label>
+                <input class="form-control" type="file" name="image" id="image_filename" multiple>
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_residence_type">Hva leies ut</label>
