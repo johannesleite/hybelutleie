@@ -41,7 +41,8 @@ class Advert extends Database {
         $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name 
                 FROM advert
                 LEFT JOIN city ON (advert.ad_zip = city.zip_code)
-                LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)";
+                LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)
+                WHERE advert.ad_status=1";
 
         return self::find_by_sql($sql);
     }
@@ -86,10 +87,10 @@ class Advert extends Database {
         $this->ad_price = $args['ad_price'] ?? 0;
         $this->ad_street_address = $args['ad_street_address'] ?? '';
         $this->ad_zip = $args['ad_zip'] ?? 0;
-        $this->ad_timestamp = $args['ad_timestamp'] ?? 0;
+        $this->ad_timestamp = $args['ad_timestamp'] ?? '';
         $this->zip_location = $args['zip_location'] ?? '';
         $this->ad_status = $args['ad_status'] ?? 0;
-        $this->user_email = $args['user_email'] ?? 0;
+        $this->user_email = $args['user_email'] ?? '';
         $this->ad_user_id = $args['ad_user_id'] ?? 0;
     
         // Caution: allows private/protected properties to be set
@@ -127,11 +128,14 @@ class Advert extends Database {
     //     return $result;
     // }
 
-    //bruke advert = new advert og lage queries som har med adverts å gjøre.
     public function ad_insert ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_user_id) {
-        $stmt = Database::$db->prepare("INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip, ad_user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $sql = "INSERT INTO advert (ad_title, ad_image, ad_residence_type, ad_desc, ad_size, ad_price, ad_street_address, ad_zip, ad_user_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = Database::$db->prepare($sql);
         $stmt->bind_param("ssssiisii", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_user_id);
         $stmt->execute();
+        $stmt->close();
     }
 
     //On myAds.php to see own ads
@@ -164,6 +168,7 @@ class Advert extends Database {
         $stmt = Database::$db->prepare($sql);
         $stmt->bind_param("ssssiisii", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id);
         $stmt->execute();
+        $stmt->close();
     }
 
 }
