@@ -101,7 +101,7 @@ if (isset($_POST["submit"])) {
         </div>
     <?php
     } else {
-        show_error_messages($errorArr);
+        display_error_messages($errorArr);
     }
  }
  
