@@ -85,20 +85,13 @@ if (isset($_POST["submit"])) {
 
     //printing of content and inserting into db
     if (empty($errorArr)) {
-
         $user->user_register($user_name, $user_phone, $user_email, $user_hashed_password);
-    ?>
-        <div class="container d-flex align-items-center">
-            <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-success" role="alert">Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!</p>
-                
-            </div>
-            <?php header("Refresh:3; url=" . url_for('/pages/login.php')); exit(); ?>
-        </div>
-    <?php
-    } else {
-        show_error_messages($errorArr);
+        display_success_message("Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!");
+        header("Refresh:3; url=" . url_for('/pages/login.php')); exit();
     }
+    else 
+        display_error_messages($errorArr);
+    
 }
 
 include(INC_PATH . '/footer.php');
