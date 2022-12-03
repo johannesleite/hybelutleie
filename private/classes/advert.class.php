@@ -38,7 +38,7 @@ class Advert extends Database {
 
     public static function ad_select_all () {
         
-        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name 
+        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_status, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name 
                 FROM advert
                 LEFT JOIN city ON (advert.ad_zip = city.zip_code)
                 LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)
@@ -49,7 +49,7 @@ class Advert extends Database {
     }
 
     public function ad_select_one ($ad_id) {
-        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_residence_type, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name, user.user_name, user.user_email 
+        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_residence_type, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_status, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name, user.user_name, user.user_email 
                 FROM advert
                 LEFT JOIN city ON (advert.ad_zip = city.zip_code)
                 LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)
@@ -141,12 +141,13 @@ class Advert extends Database {
 
     //On myAds.php to see own ads
     public function ad_select_own ($ad_user_id) {
-        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name, user.user_name, user.user_email 
+        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_desc, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, advert.ad_status, city.zip_location, residence_type.residence_type_name, user.user_name, user.user_email 
                 FROM advert
                 LEFT JOIN city ON (advert.ad_zip = city.zip_code)
                 LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)
                 LEFT JOIN user ON (advert.ad_user_id = user.user_id)
-                WHERE advert.ad_user_id=?";
+                WHERE advert.ad_user_id=? 
+                ORDER BY advert.ad_status DESC, advert.ad_id DESC";
         
         $stmt = Database::$db->prepare($sql); 
         $stmt->bind_param("i", $ad_user_id);
@@ -164,10 +165,17 @@ class Advert extends Database {
     //     ORDER BY ad_price ASC";
     // }
 
-    public function ad_update ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id) {
-        $sql = "UPDATE advert SET ad_title=?, ad_image=?, ad_residence_type=?, ad_desc=?, ad_size=?, ad_price=?, ad_street_address=?, ad_zip=? WHERE ad_id=?";
+    public function ad_update ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id) {
+        $sql = "UPDATE advert SET ad_title=?, ad_image=?, ad_residence_type=?, ad_desc=?, ad_size=?, ad_price=?, ad_street_address=?, ad_zip=?, ad_status=? WHERE ad_id=?";
         $stmt = Database::$db->prepare($sql);
-        $stmt->bind_param("ssssiisii", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id);
+        $stmt->bind_param("ssisiisiii", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
+        $stmt->execute();
+    }
+
+    public function ad_update_status ($ad_status_bool, $ad_id) {
+        $sql = "UPDATE advert SET ad_status =? WHERE ad_id=?";
+        $stmt = Database::$db->prepare($sql);
+        $stmt->bind_param("ii", $ad_status_bool, $ad_id);
         $stmt->execute();
     }
 
