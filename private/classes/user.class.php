@@ -84,8 +84,21 @@ class User extends Database {
         $stmt->close();
     }
 
+    //get user object
+    public function user_by_id($user_id)
+    {
+        $sql = "SELECT * FROM user WHERE user_id=?";
+        $stmt = Database::$db->prepare($sql);
+        $stmt->bind_param("s", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_object();
+
+        return $user;
+    }
+
     //get user values
-    public static function user_by_id($user_id)
+    public static function user_by_id_static($user_id)
     {
         $sql = "SELECT * FROM user WHERE user_id=?";
         $stmt = Database::$db->prepare($sql);
