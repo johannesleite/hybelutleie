@@ -35,7 +35,7 @@ if (isset($_POST["submit"])) {
     //creates a new user object
     $user = new User;
 
-    $exists = $user->user_email_exists($user_email);
+    $exists = $user->user_email_check($user_email);
 
     if ($exists) {
         $error_arr[] = "En bruker med denne eposten eksisterer allerede";

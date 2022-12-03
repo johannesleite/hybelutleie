@@ -1,6 +1,46 @@
 <?php
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
+
+$error_arr = array();
+
+//runs when form has been submitted
+if (isset($_POST["submit"])) {
+
+    $user_email = test_input($_POST["user_email"]) ?? '';
+    $user_password = test_input($_POST["user_password"]) ?? '';
+
+
+    //validation of input
+    if (empty($_POST["user_email"])) {
+        $error_arr[] = "Epostadresse er påkrevd";
+    } 
+
+    if (empty($_POST["user_password"])) {
+        $error_arr[] = "Passord er påkrevd";
+    }
+
+    if (empty($error_arr)) {
+
+        $user = new User();
+
+        //check if pa
+        $user_result = $user->user_email_check($user_email);
+
+        if ($user_result && password_verify($user_password, $user_result->user_hashed_password)) {
+            $session->login($user_result);
+
+            display_loading_symbol();
+            header("Refresh:2; url=" . url_for('/index.php')); exit();
+        } else {
+            //failed
+            $error_arr[] = "epostadresse og/eller passord er feil, vennligst prøv på nytt.";
+            display_error_messages($error_arr);
+        }
+    } else
+        display_error_messages($error_arr);
+}
+
 ?>
 
 <!--login form-->
@@ -23,68 +63,5 @@ include(INC_PATH . '/header.php');
 </div>
 
 <?php
-
-$errorArr = array();
-
-//runs when form has been submitted
-if (isset($_POST["submit"])) {
-
-    $user_email = test_input($_POST["user_email"]) ?? '';
-    $user_password = test_input($_POST["user_password"]) ?? '';
-
-
-    //validation of input
-    if (empty($_POST["user_email"])) {
-        $errorArr[] = "Epostadresse er påkrevd";
-    } 
-
-    if (empty($_POST["user_password"])) {
-        $errorArr[] = "Passord er påkrevd";
-    }
-
-    if (empty($errorArr)) {
-
-        $user = new User();
-
-        //check if pa
-        $user_result = $user->user_email_check($user_email);
-
-        if ($user_result && password_verify($user_password, $user_result->user_hashed_password)) {
-            $session->login($user_result);
-?>
-
-                <div class="position-absolute top-50 start-50 translate-middle">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <?php header("Refresh:2; url=" . url_for('/index.php')); exit(); ?>
-                </div>
-        <?php
-
-        } else {
-            //failed
-        ?>
-            <div class="container d-flex align-items-center">
-                <div class="col-md-4 py-3 mx-auto">
-                    <p class="alert alert-danger" role="alert">epostadresse og/eller passord er feil, vennligst prøv på nytt.</p>
-                </div>
-            </div>
-        <?php }
-    } else {
-
-        ?>
-        <div class="container d-flex align-items-center">
-            <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>
-                <ul>
-                    <?php foreach ($errorArr as $value) { ?>
-                        <li><?php echo $value ?></li>
-                    <?php } ?>
-                </ul>
-            </div>
-        </div>
-<?php
-    }
-}
 
 include(INC_PATH . '/footer.php');
