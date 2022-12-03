@@ -70,7 +70,6 @@ if (isset($_POST["submit"])) {
     
     //constructing file name
     $suffix = array_search($file_type, $accepted_file_types);
-    echo $suffix . "<br>";
 
     //if filename exists
     do {
