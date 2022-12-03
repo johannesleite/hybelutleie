@@ -45,15 +45,15 @@
     //output error messages
     function display_error_messages($error_arr) {
         $error_text = '
-        <div class="container d-flex align-items-center">
-            <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>';
-                foreach ($error_arr as $value) {
-                    $error_text .= '<li>'. $value . '</li>';
-                }
-                $error_text .= '
-            </div>
-        </div>';
+            <div class="container d-flex align-items-center">
+                <div class="col-md-4 py-3 mx-auto">
+                    <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>';
+                    foreach ($error_arr as $value) {
+                        $error_text .= '<li>'. $value . '</li>';
+                    }
+                    $error_text .= '
+                </div>
+            </div>';
 
         echo $error_text;
     }
@@ -64,6 +64,15 @@
         '<div class="container d-flex align-items-center">
             <div class="col-md-4 py-3 mx-auto">
                 <p class="alert alert-success" role="alert">'. $message. '</p>
+            </div>
+        </div>';
+    }
+
+    function display_loading_symbol() {
+        echo
+        '<div class="position-absolute top-50 start-50 translate-middle">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>';
     }

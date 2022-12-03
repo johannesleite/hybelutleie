@@ -3,9 +3,6 @@ require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 require_login();
 
-
-$user = User::user_by_id($session->user_id);
-var_dump($user);
 $error_arr = array();
 
 //runs when form has been submitted
@@ -14,6 +11,7 @@ if (isset($_POST["submit"])) {
     $user_name = test_input($_POST["user_name"]) ?? '';
     $user_phone = test_input($_POST["user_phone"]) ?? '';
     $user_email = test_input($_POST["user_email"]) ?? '';
+    $user_old_password = test_input($_POST["user_old_password"]) ?? '';
     $user_password = test_input($_POST["user_password"]) ?? '';
     $user_check_password = test_input($_POST["user_check_password"]) ?? '';
 
@@ -38,15 +36,17 @@ if (isset($_POST["submit"])) {
 
     //creates a new user object
     $user = new User;
-    $exists = $user->user_email_exists($user_email);
+    $user_result = $user->user_email_check($session->user_email);
 
-    if ($exists) {
-        $error_arr[] = "En bruker med denne eposten eksisterer allerede";
-    }
+    //password validation part
+    $user_hashed_password = '';
 
-    //checks if password was included in form
-    if (!empty($user_password)) {
-        if (empty($user_password) || empty($user_check_password)) {
+    //validates if password was included in update request
+    if (!empty($user_old_password)) {
+        //validate
+        if (!password_verify($user_old_password, $user_result->user_hashed_password)) {
+            $error_arr[] = "Gammelt passord er ikke riktig";
+        } else if (empty($user_password) || empty($user_check_password)) {
             $error_arr[] = "Passord er påkrevd";
         } else if ($user_password != $user_check_password) {
             $error_arr[] = "Passord og gjentatt passord er ikke like";
@@ -56,16 +56,21 @@ if (isset($_POST["submit"])) {
             $user_hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
     }
     
-    //printing of content and inserting into db
+    //inserting into db
     if (empty($error_arr)) {
 
-        $user->user_update($user_name, $user_phone, $user_email, $user_hashed_password, $session->user_id);
-
-        display_success_message("Din brukerprofil har blitt oppdatert!");
+        if (!empty($user_hashed_password)) {
+            $user->user_update_with_password($user_name, $user_phone, $user_email, $user_hashed_password, $session->user_id);
+        } else {
+            $user->user_update($user_name, $user_phone, $user_email, $session->user_id);
+            //display_loading_symbol();
+            //header("refresh: 2; url=" . url_for('/pages/updateUser.php')); exit(display_success_message("Din brukerprofil har blitt oppdatert!"));
+        }
     } else 
         display_error_messages($error_arr);
     
 }
+$user = User::user_by_id($session->user_id);
 
 ?>
 
@@ -73,7 +78,7 @@ if (isset($_POST["submit"])) {
 
 <div class="container h-100 d-flex align-items-center">
     <div class="col-md-4 py-3 mx-auto">
-        <h3>Registrere ny bruker</h3>
+        <h3>Oppdatere informasjon</h3>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-outline mb-1">
                 <label class="form-label" for="name">Fullt navn</label>
@@ -89,7 +94,7 @@ if (isset($_POST["submit"])) {
             </div>
             <div class="form-outline mb-2">
                 <label class="form-label" for="password">Gammelt passord</label>
-                <input type="password" name="user_password" id="password" class="form-control" />
+                <input type="password" name="user_old_password" id="password" class="form-control" />
             </div>
             <div class="form-outline mb-2">
                 <label class="form-label" for="password">Nytt passord (Minst 8 tegn)</label>
