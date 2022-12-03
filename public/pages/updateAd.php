@@ -72,12 +72,10 @@ if (isset($_POST["submit"])) {
     //constructing file name
     $suffix = array_search($file_type, $accepted_file_types);
     $filename  = $_SESSION['user_id'] . '.' . $suffix;
-    
-    /* If filename exists*/
+
+    //if filename exists
     do 
-    {
-        $filename = substr(md5(date('YmdHis')), 0, 5). '.'. $suffix;//kan legge til rand(1,100000) for å minske sjans for samme filnavn
-    }
+        $filename = substr(md5(date('YmdHis')), 0, 5). '.'. $suffix;
     while(file_exists($dir. $filename));
 
     //image validation
@@ -118,7 +116,7 @@ if (isset($_POST["submit"])) {
 <!--login form-->
 
 <div class="container text-center my-2">
-    <h3>Fyll ut annonseskjema</h3>
+    <h3>Oppdater din annonse</h3>
 </div>
 
 <div class="container d-flex align-items-center my-5">
