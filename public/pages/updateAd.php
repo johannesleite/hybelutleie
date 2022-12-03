@@ -3,6 +3,11 @@ require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 require_login();
 
+// if(!isset($_GET['ad_id'])) {
+//     header("location:".url_for('/pages/myAds.php'));
+// }
+
+$ad_id = $_GET['ad_id'];
 $error_arr = array();
 
 if (isset($_POST["submit"])) {
@@ -17,34 +22,35 @@ if (isset($_POST["submit"])) {
     $ad_price = test_input($_POST["ad_price"]) ?? 0;
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
     $ad_zip = test_input($_POST["ad_zip"]) ?? 0;
-
+    $ad_id = $ad_id;
+    echo $ad_id;
     //validate user input
     if (empty($ad_title))
-                $error_arr[] = "Tittel er påkrevd";
+        $error_arr[] = "Tittel er påkrevd";
 
-            if (empty($ad_residence_type)) 
-                $error_arr[] = "Velg boligtype";
+    if (empty($ad_residence_type)) 
+        $error_arr[] = "Velg boligtype";
 
-            if (empty($ad_desc)) 
-                $error_arr[] = "Beskrivelse er påkrevd";
+    if (empty($ad_desc)) 
+        $error_arr[] = "Beskrivelse er påkrevd";
 
-            if (empty($ad_size))
-                $error_arr[] = "Størrelse i kvm er påkrevd";
-            else if (!is_numeric($ad_size))
-                $error_arr[] = "Størrelse i kvm må være i tall";
+    if (empty($ad_size))
+        $error_arr[] = "Størrelse i kvm er påkrevd";
+    else if (!is_numeric($ad_size))
+        $error_arr[] = "Størrelse i kvm må være i tall";
 
-            if (empty($ad_price)) 
-                $error_arr[] = "Pris er påkrevd";
-            else if (!is_numeric($ad_price)) 
-                $error_arr[] = "Pris må være i tall";  
+    if (empty($ad_price)) 
+        $error_arr[] = "Pris er påkrevd";
+    else if (!is_numeric($ad_price)) 
+        $error_arr[] = "Pris må være i tall";  
 
-            if (empty($ad_street_address))
-                $error_arr[] = "Adresse er påkrevd";   
+    if (empty($ad_street_address))
+        $error_arr[] = "Adresse er påkrevd";   
 
-            if (empty($ad_zip))
-                $error_arr[] = "Postnummer er påkrevd";
-            else if (strlen($ad_zip != 4 && !is_numeric($ad_zip)))
-                $error_arr[] = "Postnummer må være fire tall";
+    if (empty($ad_zip))
+        $error_arr[] = "Postnummer er påkrevd";
+    else if (strlen($ad_zip != 4 && !is_numeric($ad_zip)))
+        $error_arr[] = "Postnummer må være fire tall";
 
 
     ###### File control #####
@@ -94,24 +100,30 @@ if (isset($_POST["submit"])) {
 
     //if no error save user input to database
     if (empty($error_arr)) {
-        $ad = new Advert;
-        $ad->ad_insert($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
-                        $ad_price, $ad_street_address, $ad_zip, $session->user_id);  
-        
+        $ad = new Advert();
+
+        $subject = $ad->ad_update($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_id);  
         //save img to database
         if (is_uploaded_file($temp_filename))
         move_uploaded_file($temp_filename, $dir.$image_filename);
         
         //display successful message
-        display_success_message("Din annonse har blitt opprettet, du blir videresendt til hjemmesiden");
-        header("Refresh:3; url=" . url_for('/index.php')); exit(); 
+        display_success_message("Din annonse har blitt oppdatert, du blir videresendt til annonsen din");
+        header("refresh: ; url=" . url_for('/pages/myAds.php')); exit(); 
     } 
         //display error message
     else 
         display_error_messages($error_arr);
 
+} else {
+    $ad = new Advert();
+    $ad_object = $ad->ad_select_one($ad_id);
+    $row = $ad_object->fetch_object();
 }
+    
 ?>
+
+
 
 <!--login form-->
 
@@ -124,16 +136,16 @@ if (isset($_POST["submit"])) {
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" enctype="multipart/form-data">
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_title">Tittel</label>
-                <input type="text" name="ad_title" id="ad_title" class="form-control" />
+                <input type="text" name="ad_title" id="ad_title" class="form-control"  value="<?php echo $row->ad_title; ?>"/>
             </div>
             <div class="mb-3">
                 <label for="image_filename" class="form-label">Legg til bilder (Kun .jpg- eller .png-format)</label>
-                <input class="form-control" type="file" name="image" id="image_filename" multiple>
+                <input class="form-control" type="file" name="image" id="image_filename" value="<?php echo $row->ad_image; ?>">
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_residence_type">Hva leies ut</label>
                 <select class="form-select" name="ad_residence_type" id="ad_residence_type">
-                    <option value="" selected hidden>...</option>
+                    <option value="<?php echo $row->ad_residence_type; ?>" hidden><?php echo $row->residence_type_name; ?></option>
                     <option value="1">Hybel</option>
                     <option value="2">Rom i kollektiv</option>
                     <option value="3">Leilighet</option>
@@ -141,25 +153,25 @@ if (isset($_POST["submit"])) {
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_desc">Beskrivelse</label>
-                <textarea class="form-control" name="ad_desc" id="description" rows="8" placeholder="Legg til beskrivelse her"></textarea>
+                <textarea class="form-control" name="ad_desc" id="description" rows="8"><?php echo $row->ad_desc; ?></textarea>
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_size">Størrelse i kvm</label>
-                <input type="text" name="ad_size" id="ad_size" class="form-control" />
+                <input type="text" name="ad_size" id="ad_size" class="form-control" value="<?php echo $row->ad_size; ?>" />
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_price">Pris</label>
-                <input type="text" name="ad_price" id="ad_price" class="form-control" />
+                <input type="text" name="ad_price" id="ad_price" class="form-control" value="<?php echo $row->ad_price; ?>" />
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_street_address">Gateadresse</label>
-                <input type="text" name="ad_street_address" id="ad_street_address" class="form-control" />
+                <input type="text" name="ad_street_address" id="ad_street_address" value="<?php echo $row->ad_street_address; ?>" class="form-control" />
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_zip">Postnummer</label>
-                <input type="text" name="ad_zip" id="ad_zip" class="form-control" />
+                <input type="text" name="ad_zip" id="ad_zip" class="form-control" value="<?php echo $row->ad_zip; ?>" />
             </div>
-            <button type="submit" name="submit" class="btn btn-primary">Legg til annonse</button>
+            <button type="submit" name="submit" class="btn btn-primary">Oppdatere annonse</button>
         </form>
     </div>
 </div>

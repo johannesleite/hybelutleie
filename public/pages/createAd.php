@@ -57,7 +57,6 @@ if (isset($_POST["submit"])) {
 
     //configurations
     $dir = $_SERVER['DOCUMENT_ROOT'].'/hybelutleie/public/assets/img/';
-    $sql_filepath = url_for('/assets/img/').$image_filename;
     $accepted_file_types = array("jpg" => "image/jpeg",
                                  "png" => "image/png");
     $max_file_size = 1024*1024*8; //8 MB
@@ -71,12 +70,11 @@ if (isset($_POST["submit"])) {
     
     //constructing file name
     $suffix = array_search($file_type, $accepted_file_types);
-    $filename  = $_SESSION['user_id'] . '.' . $suffix;
-    
-    /* If filename exists*/
-    do 
-    {
-        $filename = substr(md5(date('YmdHis')), 0, 5). '.'. $suffix;//kan legge til rand(1,100000) for å minske sjans for samme filnavn
+    echo $suffix . "<br>";
+
+    //if filename exists
+    do {
+        $filename = substr(md5(date('YmdHis')), 0, 8). '.'. $suffix;//kan legge til rand(1,100000) for å minske sjans for samme filnavn
     }
     while(file_exists($dir. $filename));
 
@@ -93,6 +91,7 @@ if (isset($_POST["submit"])) {
  
 
     ###### Save to Database #####
+    $sql_filepath = url_for('/assets/img/').$filename;
 
     //if no error save user input to database
     if (empty($error_arr)) {
@@ -102,11 +101,11 @@ if (isset($_POST["submit"])) {
         
         //save img to database
         if (is_uploaded_file($temp_filename))
-        move_uploaded_file($temp_filename, $dir.$image_filename);
+        move_uploaded_file($temp_filename, $dir.$filename);
         
         //display successful message
-        display_success_message("Din annonse har blitt opprettet, du blir videresendt til hjemmesiden");
-        header("Refresh:3; url=" . url_for('/index.php')); exit(); 
+        display_success_message("Din annonse har blitt opprettet, du blir videresendt til dine annonser");
+        header("Refresh:3; url=" . url_for('/pages/myAds.php')); exit(); 
     } 
         //display error message
     else 
@@ -130,7 +129,7 @@ if (isset($_POST["submit"])) {
             </div>
             <div class="mb-3">
                 <label for="image_filename" class="form-label">Legg til bilder (Kun .jpg- eller .png-format)</label>
-                <input class="form-control" type="file" name="image" id="image_filename" multiple>
+                <input class="form-control" type="file" name="image" id="image_filename">
             </div>
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_residence_type">Hva leies ut</label>

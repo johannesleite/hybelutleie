@@ -9,7 +9,6 @@ include(INC_PATH . '/header.php');
 $ad = new Advert;
 
 $adId = $_GET["ad_id"];
-//$ad = Advert::ad_select_one($adId);
 $result = $ad->ad_select_one($adId);
 while ($row = $result->fetch_object()) {
 ?>
