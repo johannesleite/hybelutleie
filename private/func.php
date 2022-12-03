@@ -43,17 +43,17 @@
     }
 
     //output error messages
-    function display_error_messages($errorArr) {
+    function display_error_messages($error_arr) {
         $error_text = '
-        <div class="container d-flex align-items-center">
-            <div class="col-md-4 py-3 mx-auto">
-                <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>';
-                foreach ($errorArr as $value) {
-                    $error_text .= '<li>'. $value . '</li>';
-                }
-                $error_text .= '
-            </div>
-        </div>';
+            <div class="container d-flex align-items-center">
+                <div class="col-md-4 py-3 mx-auto">
+                    <p class="alert alert-danger" role="alert">Vennligst rett opp feilene under og prøv på nytt</p>';
+                    foreach ($error_arr as $value) {
+                        $error_text .= '<li>'. $value . '</li>';
+                    }
+                    $error_text .= '
+                </div>
+            </div>';
 
         echo $error_text;
     }
@@ -68,6 +68,14 @@
         </div>';
     }
 
+    function display_loading_symbol() {
+        echo
+        '<div class="position-absolute top-50 start-50 translate-middle">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>';
+    }
     //validate input from form ad
     function validate_ad_input($ad_title, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip) {
         if (isset($_POST["submit"])) {

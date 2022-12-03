@@ -13,8 +13,6 @@ class User extends Database {
     // protected $user_hashed_password;
     // protected $user_password_required = true;
 
-    // protected static $db;
-
     // public function __construct($args=[]) {
     //     $this->name = $args['name'] ?? '';
     //     $this->phone = $args['phone'] ?? '';
@@ -67,9 +65,18 @@ class User extends Database {
     }
 
     //update own user information
-    public function user_update($user_name, $user_phone, $user_email, $user_hashed_password, $user_id)
+    public function user_update($user_name, $user_phone, $user_email, $user_id)
     {
+        $sql = "UPDATE user SET user_name=?, user_phone=?, user_email=? WHERE user_id=?";
+        $stmt = Database::$db->prepare($sql);
+        $stmt->bind_param("ssss", $user_name, $user_phone, $user_email, $user_id);
+        $stmt->execute();
+        $stmt->close();
+    }
 
+    //update own user information including password
+    public function user_update_with_password($user_name, $user_phone, $user_email, $user_hashed_password = null, $user_id)
+    {
         $sql = "UPDATE user SET user_name=?, user_phone=?, user_email=?, user_hashed_password=? WHERE user_id=?";
         $stmt = Database::$db->prepare($sql);
         $stmt->bind_param("sssss", $user_name, $user_phone, $user_email, $user_hashed_password, $user_id);
@@ -77,7 +84,7 @@ class User extends Database {
         $stmt->close();
     }
 
-    //see user info
+    //get user values
     public static function user_by_id($user_id)
     {
         $sql = "SELECT * FROM user WHERE user_id=?";
