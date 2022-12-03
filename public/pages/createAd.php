@@ -72,10 +72,12 @@ if (isset($_POST["submit"])) {
     //constructing file name
     $suffix = array_search($file_type, $accepted_file_types);
     $filename  = $_SESSION['user_id'] . '.' . $suffix;
-
-    //if filename exists
+    
+    /* If filename exists*/
     do 
-        $filename = substr(md5(date('YmdHis')), 0, 5). '.'. $suffix;
+    {
+        $filename = substr(md5(date('YmdHis')), 0, 5). '.'. $suffix;//kan legge til rand(1,100000) for å minske sjans for samme filnavn
+    }
     while(file_exists($dir. $filename));
 
     //image validation
