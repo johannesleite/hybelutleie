@@ -3,26 +3,64 @@ require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 require_login();
 
+$error_arr = array();
+
 if (isset($_POST["submit"])) {
-    //bind user input to variables
+
+    ###### User input control #####
+
+    //grab data from form
     $ad_title = test_input($_POST["ad_title"]) ?? '';
-    $ad_residence_type = test_input($_POST["ad_residence_type"]) ?? null;
+    $ad_residence_type = test_input($_POST["ad_residence_type"]) ?? 0;
     $ad_desc = test_input($_POST["ad_desc"]) ?? '';
-    $ad_size = test_input($_POST["ad_size"]) ?? null;
-    $ad_price = test_input($_POST["ad_price"]) ?? null;
+    $ad_size = test_input($_POST["ad_size"]) ?? 0;
+    $ad_price = test_input($_POST["ad_price"]) ?? 0;
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
-    $ad_zip = test_input($_POST["ad_zip"]) ?? null;
+    $ad_zip = test_input($_POST["ad_zip"]) ?? 0;
+
+    //validate user input
+    if (empty($ad_title))
+                $error_arr[] = "Tittel er påkrevd";
+
+            if (empty($ad_residence_type)) 
+                $error_arr[] = "Velg boligtype";
+
+            if (empty($ad_desc)) 
+                $error_arr[] = "Beskrivelse er påkrevd";
+
+            if (empty($ad_size))
+                $error_arr[] = "Størrelse i kvm er påkrevd";
+            else if (!is_numeric($ad_size))
+                $error_arr[] = "Størrelse i kvm må være i tall";
+
+            if (empty($ad_price)) 
+                $error_arr[] = "Pris er påkrevd";
+            else if (!is_numeric($ad_price)) 
+                $error_arr[] = "Pris må være i tall";  
+
+            if (empty($ad_street_address))
+                $error_arr[] = "Adresse er påkrevd";   
+
+            if (empty($ad_zip))
+                $error_arr[] = "Postnummer er påkrevd";
+            else if (strlen($ad_zip != 4 && !is_numeric($ad_zip)))
+                $error_arr[] = "Postnummer må være fire tall";
+
+
+    ###### File control #####
 
     //file info
     $image_filename = $_FILES["image"]["name"];
     $temp_filename = $_FILES["image"]["tmp_name"];
     $file_type = $_FILES['image']['type'];
+    $file_size = $_FILES['image']['size'];
 
     //configurations
     $dir = $_SERVER['DOCUMENT_ROOT'].'/hybelutleie/public/assets/img/';
     $sql_filepath = url_for('/assets/img/').$image_filename;
     $accepted_file_types = array("jpg" => "image/jpeg",
                                  "png" => "image/png");
+    $max_file_size = 1024*1024*8; //8 MB
 
     //no directory with that name?
     if(!file_exists($dir)) 
@@ -31,21 +69,30 @@ if (isset($_POST["submit"])) {
                 die("Cannot create directory..." . $dir);
         }
     
-    //finding suffix
+    //constructing file name
     $suffix = array_search($file_type, $accepted_file_types);
+    $filename  = $_SESSION['user_id'] . '.' . $suffix;
 
     //if filename exists
     do 
         $filename = substr(md5(date('YmdHis')), 0, 5). '.'. $suffix;
     while(file_exists($dir. $filename));
 
-    //input validation & error messages
-    $img_error_arr = validate_img();
-    $error_arr = validate_ad_input($ad_title, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip);
-    if (!empty($img_error_arr))
-        $error_arr = array_merge($error_arr, $img_error_arr); 
-    
-    //save user input to database
+    //image validation
+    if (!empty($file_type) && !in_array($file_type, $accepted_file_types)) {
+        $types = implode(", ", array_keys($accepted_file_types));
+        $error_arr[] = "Ugyldig filformat (Kun $types er tillatt)";
+    }
+
+    if ($file_size > $max_file_size){
+    $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
+    " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
+    }
+ 
+
+    ###### Save to Database #####
+
+    //if no error save user input to database
     if (empty($error_arr)) {
         $ad = new Advert;
         $ad->ad_insert($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
