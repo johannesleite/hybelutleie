@@ -22,8 +22,13 @@ if (isset($_POST["submit"])) {
     $ad_price = test_input($_POST["ad_price"]) ?? 0;
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
     $ad_zip = test_input($_POST["ad_zip"]) ?? 0;
-    $ad_status = test_input($_POST["ad_status"]) ?? '1';
     $ad_id = test_input($_POST["ad_id"]) ?? 0;;
+
+    //grab and assign checkbox value for status
+    if (isset($_POST["ad_status"]))
+        $ad_status = 0;
+    else
+        $ad_status = 1;
 
     //validate user input
     if (empty($ad_title))
@@ -64,12 +69,9 @@ if (isset($_POST["submit"])) {
 
     //configurations
     $dir = $_SERVER['DOCUMENT_ROOT'] . '/hybelutleie/public/assets/img/';
-    $sql_filepath = url_for('/assets/img/') . $image_filename;
-    $accepted_file_types = array(
-        "jpg" => "image/jpeg",
-        "png" => "image/png"
-    );
-    $max_file_size = 1024 * 1024 * 8; //8 MB
+    $accepted_file_types = array("jpg" => "image/jpeg",
+                                 "png" => "image/png");
+    $max_file_size = 1024*1024*8; //8 MB
 
     //no directory with that name?
     if (!file_exists($dir)) {
@@ -79,11 +81,10 @@ if (isset($_POST["submit"])) {
 
     //constructing file name
     $suffix = array_search($file_type, $accepted_file_types);
-    $filename  = $_SESSION['user_id'] . '.' . $suffix;
 
     //if filename exists
     do
-        $filename = substr(md5(date('YmdHis')), 0, 5) . '.' . $suffix;
+        $filename = substr(md5(date('YmdHis')), 0, 8) . '.' . $suffix;
     while (file_exists($dir . $filename));
 
     //image validation
@@ -93,27 +94,27 @@ if (isset($_POST["submit"])) {
     }
 
     if ($file_size > $max_file_size) {
-        $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) .
-            " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
+        $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
+        " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
     }
 
 
     ###### Save to Database #####
+    $sql_filepath = url_for('/assets/img/') . $filename;
 
     //if no error save user input to database
     if (empty($error_arr)) {
-        $newobject = new Advert();
-
-        $result = $newobject->ad_update($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
+        $ad_object = new Advert();
+        $result = $ad_object->ad_update($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
+                                        $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
         //save img to database
         if (is_uploaded_file($temp_filename))
-            move_uploaded_file($temp_filename, $dir . $image_filename);
+            move_uploaded_file($temp_filename, $dir . $filename);
 
         //display successful message
         if ($result) {
-            display_success_message("Din annonse har blitt oppdatert, du blir videresendt til annonsen din");
-            header("refresh: ; url=" . url_for('/pages/myAds.php'));
-            exit();
+            display_success_message("Din annonse har blitt oppdatert, du blir videresendt til annonsene dine");
+            header("Refresh:3; url=" . url_for('/pages/myAds.php')); exit();
         }
     }
     //display error message
@@ -126,8 +127,6 @@ if (isset($_POST["submit"])) {
 }
 
 ?>
-
-
 
 <!--login form-->
 
@@ -177,9 +176,9 @@ if (isset($_POST["submit"])) {
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" name="ad_status" id="ad_status" <?php if ($row->ad_status==0) echo "checked";?> >
-                <label class="form-check-label" for="ad_status"><?php if ($row->ad_status==0) {echo "Aktiver annonsen ved å huke av her";} else echo "Deaktiver annonsen ved å huke av her"; ?></label>
+                <label class="form-check-label" for="ad_status"><?php if ($row->ad_status==0) {echo "Fjern markering for å aktivere annonse";} else echo "Deaktiver annonsen ved å huke av her"; ?></label>
             </div>
-            <input type="hidden" name="ad_id" value=<?php echo "'$ad_id'"; ?>>
+            <input type="hidden" name="ad_id" value="<?php echo $ad_id ?>">
             <button type="submit" name="submit" class="btn btn-primary">Oppdatere annonse</button>
         </form>
     </div>

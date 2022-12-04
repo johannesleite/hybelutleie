@@ -6,29 +6,34 @@ include(INC_PATH . '/header.php');
 <!--bootstrap cards with each individual advert-->
 
     <div class="container d-flex align-items-center">
-    <!--d-flex align-items-center-->
-        <div class="col-lg-10 mx-auto">
+
+        <!--Filtering of adverts-->
+        <div class="pt-3 col-lg-10 mx-auto">
         <form action="" method="get">
             <select name="filter">
                 <option value="" disabled selected>Filtrere</option>
-                <option value="priceAsc">pris lav-høy</option>
-                <option value="priceDesc">pris høy-lav</option>
-                <option value="dateAdded">dato lagt ut</option>
+                <option value="price_asc">Pris lav-høy</option>
+                <option value="price_desc">Pris høy-lav</option>
+                <option value="date_added_desc">Nyligste</option>
+                <option value="date_added_asc">Eldste</option>
             </select>
             <button type="submit" class="btn btn-primary">Filtrér</button>
         </form>
 
         <?php
-        
-        $ads = Advert::ad_select_all();
 
-         foreach ($ads as $ad) {
+        $ads = new Advert();
+
+        $ads = $ads->ad_get_sorted(isset($_GET['filter']) ? $_GET['filter'] : '');
+
+        while ($ad = $ads->fetch_object()) {
+
          ?>
 
              <div class="card shadow-sm border-0 my-4">
                  <div class="row g-0">
-                     <div class="col-md-4">
-                         <img src="<?php echo $ad->ad_image; ?>" class="img-fluid rounded-start" alt="advert image">
+                     <div class="col-md-4 text-center bg-secondary bg-gradient" style="max-height: 350px;">
+                         <img src="<?php echo $ad->ad_image; ?>" class="img-fluid rounded-start h-100" alt="advert image">
                      </div>
                      <div class="col-md-8 align-self-center">
                          <div class="card-body py-1">

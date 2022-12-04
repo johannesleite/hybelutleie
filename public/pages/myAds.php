@@ -20,8 +20,8 @@ require_login();
         ?>
             <div class="card shadow-sm border-0 my-4">
                 <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="<?php echo $row->ad_image; ?>" class="img-fluid rounded-start" alt="advert image">
+                    <div class="col-md-4 text-center bg-secondary bg-gradient" style="max-height: 350px;">
+                        <img src="<?php echo $row->ad_image; ?>" class="img-fluid rounded-start h-100" alt="advert image">
                     </div>
                     <div class="col-md-8 align-self-center">
                         <div class="card-body py-1">
