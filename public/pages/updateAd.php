@@ -7,13 +7,13 @@ if(!isset($_GET['ad_id'])) {
     header("location:".url_for('/pages/myAds.php'));
 }
 
-$ad_id = $_GET['ad_id'];
+$ad_id = $_GET["ad_id"];
 $error_arr = array();
 
 if (isset($_POST["submit"])) {
 
     ###### User input control #####
-    var_dump($_POST);
+
     //grab data from form
     $ad_title = test_input($_POST["ad_title"]) ?? '';
     $ad_residence_type = test_input($_POST["ad_residence_type"]) ?? 0;
@@ -23,7 +23,7 @@ if (isset($_POST["submit"])) {
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
     $ad_zip = test_input($_POST["ad_zip"]) ?? 0;
     $ad_status = test_input($_POST["ad_status"]) ?? '1';
-    $ad_id = $_GET['ad_id'];
+    $ad_id = test_input($_POST["ad_id"]) ?? 0;;
 
     //validate user input
     if (empty($ad_title))
@@ -176,9 +176,10 @@ if (isset($_POST["submit"])) {
                 <input type="text" name="ad_zip" id="ad_zip" class="form-control" value="<?php echo $row->ad_zip; ?>" />
             </div>
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" name="ad_status" id="ad_status" <?php if ($row->ad_status==0) echo "checked"; ?> >
-                <label class="form-check-label" for="ad_status">Deaktiver annonsen ved å huke av her</label>
+                <input type="checkbox" class="form-check-input" name="ad_status" id="ad_status" <?php if ($row->ad_status==0) echo "checked";?> >
+                <label class="form-check-label" for="ad_status"><?php if ($row->ad_status==0) {echo "Aktiver annonsen ved å huke av her";} else echo "Deaktiver annonsen ved å huke av her"; ?></label>
             </div>
+            <input type="hidden" name="ad_id" value=<?php echo "'$ad_id'"; ?>>
             <button type="submit" name="submit" class="btn btn-primary">Oppdatere annonse</button>
         </form>
     </div>
