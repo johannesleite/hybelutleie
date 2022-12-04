@@ -8,6 +8,7 @@ $error_arr = array();
 //runs when form has been submitted
 if (isset($_POST["submit"])) {
 
+    //grab data from form
     $user_name = test_input($_POST["user_name"]) ?? '';
     $user_phone = test_input($_POST["user_phone"]) ?? '';
     $user_email = test_input($_POST["user_email"]) ?? '';
@@ -15,7 +16,7 @@ if (isset($_POST["submit"])) {
     $user_password = test_input($_POST["user_password"]) ?? '';
     $user_check_password = test_input($_POST["user_check_password"]) ?? '';
 
-    //validation of input
+    //validate user input
     if (empty($user_name)) {
         $error_arr[] = "Navn er påkrevd";
     } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name)) {
