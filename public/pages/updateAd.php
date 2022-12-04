@@ -2,14 +2,13 @@
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 require_login();
-
-if(!isset($_GET['ad_id'])) {
-    header("location:".url_for('/pages/myAds.php'));
-}
-
-$ad_id = $_GET["ad_id"];
+// if(!isset($_GET['ad_id'])) {
+//     header("location:".url_for('/pages/myAds.php'));
+// }
 $error_arr = array();
+$ad_id = $_GET["ad_id"];
 
+//runs when form has been submitted
 if (isset($_POST["submit"])) {
 
     ###### User input control #####
@@ -111,11 +110,8 @@ if (isset($_POST["submit"])) {
         if (is_uploaded_file($temp_filename))
             move_uploaded_file($temp_filename, $dir . $filename);
 
-        //display successful message
-        if ($result) {
-            display_success_message("Din annonse har blitt oppdatert, du blir videresendt til annonsene dine");
-            header("Refresh:3; url=" . url_for('/pages/myAds.php')); exit();
-        }
+        //send to myAds.php
+        header("Location:".url_for('/pages/myAds.php')); exit();
     }
     //display error message
     else

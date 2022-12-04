@@ -5,6 +5,8 @@ require_login();
 
 $error_arr = array();
 
+
+//runs when form has been submitted
 if (isset($_POST["submit"])) {
 
     ###### User input control #####
