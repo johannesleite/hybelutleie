@@ -38,8 +38,6 @@ if (isset($_POST["submit"])) {
     $user = new User;
     $user_result = $user->user_by_id($session->user_id);
 
-var_dump($user_result);
-
     //if email exists
     $check_email = $user->user_email_exists($user_email);
     

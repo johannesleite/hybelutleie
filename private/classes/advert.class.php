@@ -157,13 +157,34 @@ class Advert extends Database {
         return $result;
     }
     
-    // function ad_sort () {
-    //     $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name 
-    //     FROM advert
-    //     LEFT JOIN city ON (advert.ad_zip = city.zip_code)
-    //     LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id)
-    //     ORDER BY ad_price ASC";
-    // }
+    public static function ad_get_sorted ($filter) {
+        $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name 
+        FROM advert
+        LEFT JOIN city ON (advert.ad_zip = city.zip_code)
+        LEFT JOIN residence_type ON (advert.ad_residence_type = residence_type.residence_type_id) 
+        WHERE advert.ad_status=1 ";
+
+        switch ($filter) {
+            case 'price_asc':
+                $sql .= "ORDER BY ad_price ASC";
+                break;
+            case 'price_desc':
+                $sql .= "ORDER BY ad_price DESC";
+                break;
+            case 'date_added_asc':
+                $sql .= "ORDER BY ad_timestamp ASC";
+                break;
+            case 'date_added_desc':
+                $sql .= "ORDER BY ad_timestamp DESC";
+                break;  
+            default:
+                $sql .= "ORDER BY ad_timestamp DESC";
+                break;
+        }
+
+        $result = Database::$db->query($sql);
+        return $result;
+    }
 
     public function ad_update ($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id) {
         $sql = "UPDATE advert SET ad_title=?, ad_image=?, ad_residence_type=?, ad_desc=?, ad_size=?, ad_price=?, ad_street_address=?, ad_zip=?, ad_status=? WHERE ad_id=?";
@@ -172,11 +193,11 @@ class Advert extends Database {
         $stmt->execute();
     }
 
-    public function ad_update_status ($ad_status_bool, $ad_id) {
-        $sql = "UPDATE advert SET ad_status =? WHERE ad_id=?";
-        $stmt = Database::$db->prepare($sql);
-        $stmt->bind_param("ii", $ad_status_bool, $ad_id);
-        $stmt->execute();
-    }
+    // public function ad_update_status ($ad_status_bool, $ad_id) {
+    //     $sql = "UPDATE advert SET ad_status =? WHERE ad_id=?";
+    //     $stmt = Database::$db->prepare($sql);
+    //     $stmt->bind_param("ii", $ad_status_bool, $ad_id);
+    //     $stmt->execute();
+    // }
 
 }
