@@ -20,31 +20,31 @@ if (isset($_POST["submit"])) {
 
     //validate user input
     if (empty($ad_title))
-                $error_arr[] = "Tittel er påkrevd";
+        $error_arr[] = "Tittel er påkrevd";
 
-            if (empty($ad_residence_type)) 
-                $error_arr[] = "Velg boligtype";
+    if (empty($ad_residence_type)) 
+        $error_arr[] = "Velg boligtype";
 
-            if (empty($ad_desc)) 
-                $error_arr[] = "Beskrivelse er påkrevd";
+    if (empty($ad_desc)) 
+        $error_arr[] = "Beskrivelse er påkrevd";
 
-            if (empty($ad_size))
-                $error_arr[] = "Størrelse i kvm er påkrevd";
-            else if (!is_numeric($ad_size))
-                $error_arr[] = "Størrelse i kvm må være i tall";
+    if (empty($ad_size))
+        $error_arr[] = "Størrelse i kvm er påkrevd";
+    else if (!is_numeric($ad_size))
+        $error_arr[] = "Størrelse i kvm må være i tall";
 
-            if (empty($ad_price)) 
-                $error_arr[] = "Pris er påkrevd";
-            else if (!is_numeric($ad_price)) 
-                $error_arr[] = "Pris må være i tall";  
+    if (empty($ad_price))
+        $error_arr[] = "Pris er påkrevd";
+    else if (!is_numeric($ad_price))
+        $error_arr[] = "Pris må være i tall";
 
-            if (empty($ad_street_address))
-                $error_arr[] = "Adresse er påkrevd";   
+    if (empty($ad_street_address))
+        $error_arr[] = "Adresse er påkrevd";
 
-            if (empty($ad_zip))
-                $error_arr[] = "Postnummer er påkrevd";
-            else if (strlen($ad_zip != 4 && !is_numeric($ad_zip)))
-                $error_arr[] = "Postnummer må være fire tall";
+    if (empty($ad_zip))
+        $error_arr[] = "Postnummer er påkrevd";
+    else if (strlen($ad_zip != 4) && !is_numeric($ad_zip))
+        $error_arr[] = "Postnummer må være fire tall";
 
 
     ###### File control #####
@@ -56,26 +56,24 @@ if (isset($_POST["submit"])) {
     $file_size = $_FILES['image']['size'];
 
     //configurations
-    $dir = $_SERVER['DOCUMENT_ROOT'].'/hybelutleie/public/assets/img/';
+    $dir = $_SERVER['DOCUMENT_ROOT'] . '/hybelutleie/public/assets/img/';
     $accepted_file_types = array("jpg" => "image/jpeg",
                                  "png" => "image/png");
     $max_file_size = 1024*1024*8; //8 MB
 
     //no directory with that name?
-    if(!file_exists($dir)) 
-        {
-            if (!mkdir($dir, 0777, true)) 
-                die("Cannot create directory..." . $dir);
-        }
-    
+    if (!file_exists($dir)) {
+        if (!mkdir($dir, 0777, true))
+            die("Cannot create directory..." . $dir);
+    }
+
     //constructing file name
     $suffix = array_search($file_type, $accepted_file_types);
 
     //if filename exists
-    do {
-        $filename = substr(md5(date('YmdHis')), 0, 8). '.'. $suffix;//kan legge til rand(1,100000) for å minske sjans for samme filnavn
-    }
-    while(file_exists($dir. $filename));
+    do
+        $filename = substr(md5(date('YmdHis')), 0, 8) . '.' . $suffix;
+    while (file_exists($dir . $filename));
 
     //image validation
     if (!empty($file_type) && !in_array($file_type, $accepted_file_types)) {
@@ -83,33 +81,32 @@ if (isset($_POST["submit"])) {
         $error_arr[] = "Ugyldig filformat (Kun $types er tillatt)";
     }
 
-    if ($file_size > $max_file_size){
-    $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
-    " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
+    if ($file_size > $max_file_size) {
+        $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
+        " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
     }
- 
+
 
     ###### Save to Database #####
-    $sql_filepath = url_for('/assets/img/').$filename;
+    $sql_filepath = url_for('/assets/img/') . $filename;
 
     //if no error save user input to database
     if (empty($error_arr)) {
         $ad = new Advert;
         $ad->ad_insert($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
-                        $ad_price, $ad_street_address, $ad_zip, $session->user_id);  
-        
+                        $ad_price, $ad_street_address, $ad_zip, $session->user_id);
+
         //save img to database
         if (is_uploaded_file($temp_filename))
-        move_uploaded_file($temp_filename, $dir.$filename);
-        
+            move_uploaded_file($temp_filename, $dir.$filename);
+
         //display successful message
         display_success_message("Din annonse har blitt opprettet, du blir videresendt til dine annonser");
         header("Refresh:3; url=" . url_for('/pages/myAds.php')); exit(); 
-    } 
+    }
         //display error message
     else 
         display_error_messages($error_arr);
-
 }
 ?>
 
@@ -121,7 +118,7 @@ if (isset($_POST["submit"])) {
 
 <div class="container d-flex align-items-center my-5">
     <div class="col-md-6 py-4 mx-auto">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" enctype="multipart/form-data">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
             <div class="form-outline mb-3">
                 <label class="form-label" for="ad_title">Tittel</label>
                 <input type="text" name="ad_title" id="ad_title" class="form-control" />
