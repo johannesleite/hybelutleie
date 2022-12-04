@@ -37,7 +37,11 @@ require_login();
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p><?php echo $ad->ad_zip . ", " . $ad->zip_location; ?></p>
-                                <form action="<?php echo url_for('/pages/updateAd.php'); ?>" method="get">
+                                <form action="<?php echo url_for('/pages/viewOneAd.php'); ?>" method="get">
+                                     <input type="hidden" name="ad_id" value="<?php echo $ad->ad_id; ?>">
+                                     <button type="submit" class="btn btn-primary">Se hele annonsen</button>
+                                 </form>
+                                 <form action="<?php echo url_for('/pages/updateAd.php'); ?>" method="get">
                                     <input type="hidden" name="ad_id" value="<?php echo $ad->ad_id; ?>">
                                     <button type="submit" class="btn btn-primary">Endre annonsen</button>
                                 </form>
