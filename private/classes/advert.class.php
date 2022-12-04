@@ -157,7 +157,7 @@ class Advert extends Database {
         return $result;
     }
     
-    public static function ad_get_sorted ($filter) {
+    public static function ad_get_all_sorted ($filter) {
         $sql = "SELECT advert.ad_id, advert.ad_title, advert.ad_image, advert.ad_size, advert.ad_price, advert.ad_street_address, advert.ad_zip, advert.ad_timestamp, city.zip_location, residence_type.residence_type_name 
         FROM advert
         LEFT JOIN city ON (advert.ad_zip = city.zip_code)
@@ -192,12 +192,5 @@ class Advert extends Database {
         $stmt->bind_param("ssisiisiii", $ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
         $stmt->execute();
     }
-
-    // public function ad_update_status ($ad_status_bool, $ad_id) {
-    //     $sql = "UPDATE advert SET ad_status =? WHERE ad_id=?";
-    //     $stmt = Database::$db->prepare($sql);
-    //     $stmt->bind_param("ii", $ad_status_bool, $ad_id);
-    //     $stmt->execute();
-    // }
 
 }
