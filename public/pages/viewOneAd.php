@@ -34,7 +34,11 @@ while ($row = $result->fetch_object()) {
                         <div class="ratio ratio-4x3"><?php echo api_address_map($row->ad_street_address, $row->ad_zip);?></div>
                         <p class=""><?php echo $row->ad_street_address . ", " . $row->ad_zip . " " . $row->zip_location; ?></p>
                         <p class=""><strong><?php echo $row->user_name; ?></strong></p>
-                        <a href="mailto:<?php echo $row->user_email?>" class="btn btn-primary">Kontakt utleier</a>
+                        <form action="<?php echo url_for('/pages/contactSeller.php'); ?>" method="post">
+                            <input type="hidden" name="to_email" value="<?php echo $row->user_email; ?>">
+                            <input type="hidden" name="ad_title" value="<?php echo $row->ad_title; ?>">
+                            <button type="submit" class="btn btn-ads btn-primary">Kontakt utleier</button>
+                        </form>
                     </div>
                 </div>
             </div>
