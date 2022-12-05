@@ -8,7 +8,6 @@ if (isset($_GET["ad_id"]) ? $ad_id = $_GET["ad_id"] : $ad_id = $_POST["ad_id"])
 
 $error_arr = array();
 
-
 //runs when form has been submitted
 if (isset($_POST["submit"])) {
 
@@ -127,14 +126,14 @@ if (isset($_POST["submit"])) {
 
         //display successful message
         display_success_message("Din annonse har blitt oppdatert, du blir videresendt til dine annonser");
-        header("refresh:3; url=".url_for('/pages/myAds.php')); exit();
+        header("refresh:2; url=".url_for('/pages/myAds.php')); exit();
     }
     //display error message
     else
         display_error_messages($error_arr);
 }
 
-
+//creating object and using it to echo values in form
 $ad = new Advert();
 $ad_object = $ad->ad_select_one($ad_id);
 $row = $ad_object->fetch_object();

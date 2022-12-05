@@ -19,7 +19,7 @@ require_login();
     ?>
         <div class="card shadow-sm border-0 my-4">
             <div class="row g-0" <?php if ($ad->ad_status==0) {echo 'style="opacity: 50%;"';} ?>>
-                <div class="col-md-4 text-center border-right bg-gradient" style="max-height: 300px;">
+                <div class="col-md-4 ad-image text-center bg-light">
                     <img src="<?php echo $ad->ad_image; ?>" class="img-fluid rounded-start h-100" alt="Denne annonsen har ikke bilde">
                 </div>
                 <div class="col-md-8 align-self-center">
@@ -29,20 +29,22 @@ require_login();
                             <div class="text-muted">Dato lagt ut: <?php echo $ad->ad_timestamp; ?></div>
                         </div>
                         <p class="card-text">Boligtype: <?php echo $ad->residence_type_name; ?></p>
-                        <p class="card-text">Størrelse: <?php echo $ad->ad_size; ?>kvm</p>
                         <div class="d-flex justify-content-between">
-                        <p class="card-text"><strong>Pris: <?php echo $ad->ad_price; ?>,-</strong></p>                                
-                        <p class="card-text"><strong>Status: <?php if ($ad->ad_status==1) {echo "Aktiv";} else echo "Deaktivert"; ?></strong></p>                                
+                            <p class="card-text">Størrelse: <?php echo $ad->ad_size; ?>kvm</p>
+                            <p class="card-text"><strong>Status: <?php if ($ad->ad_status==1) {echo "Aktiv";} else echo "Deaktivert"; ?></strong></p>                                
                         </div>
                         <div class="d-flex justify-content-between">
-                            <p><?php echo $ad->ad_zip . ", " . $ad->zip_location; ?></p>
+                            <p class="card-text"><strong>Pris: <?php echo $ad->ad_price; ?>,-</strong></p>                                
                             <form action="<?php echo url_for('/pages/viewOneAd.php'); ?>" method="get">
-                                    <input type="hidden" name="ad_id" value="<?php echo $ad->ad_id; ?>">
-                                    <button type="submit" class="btn btn-primary">Se hele annonsen</button>
-                                </form>
-                                <form action="<?php echo url_for('/pages/updateAd.php'); ?>" method="get">
                                 <input type="hidden" name="ad_id" value="<?php echo $ad->ad_id; ?>">
-                                <button type="submit" class="btn btn-primary">Endre annonsen</button>
+                                <button type="submit" class="btn btn-ads btn-primary">Se hele annonsen</button>
+                            </form>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <p><?php echo $ad->ad_zip . ", " . $ad->zip_location; ?></p>
+                            <form action="<?php echo url_for('/pages/updateAd.php'); ?>" method="get">
+                                <input type="hidden" name="ad_id" value="<?php echo $ad->ad_id; ?>">
+                                <button type="submit" class="btn btn-ads btn-primary">Endre annonsen</button>
                             </form>
                         </div>
                     </div>

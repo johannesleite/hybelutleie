@@ -17,23 +17,21 @@ if (isset($_POST["submit"])) {
     $user_check_password = test_input($_POST["user_check_password"]) ?? '';
 
     //validate user input
-    if (empty($user_name)) {
+    if (empty($user_name)) 
         $error_arr[] = "Navn er påkrevd";
-    } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name)) {
+    else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name))
         $error_arr[] = "Navn kan kun inneholde norske bokstaver og mellomrom";
-    }
+    
 
-    if (empty($user_phone)) {
+    if (empty($user_phone)) 
         $error_arr[] = "Telefonnummer er påkrevd";
-    } else if (!is_numeric($user_phone)) {
+    else if (!is_numeric($user_phone))
         $error_arr[] = "Telefonnummer kan bare inneholde tall";
-    }
 
-    if (empty($user_email)) {
+    if (empty($user_email))
         $error_arr[] = "Epostadresse er påkrevd";
-    } else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+    else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL))
         $error_arr[] = "Epostadressen har ugyldig format";
-    }
 
     //creates a new user object
     $user = new User;
@@ -42,32 +40,30 @@ if (isset($_POST["submit"])) {
     //if email exists
     $check_email = $user->user_email_exists($user_email);
     
-    if ($check_email && $user_result->user_email != $user_email) {
+    if ($check_email && $user_result->user_email != $user_email)
         $error_arr[] = "En bruker med denne eposten eksisterer allerede";
-    }
+
 
     ###### Password validation #####
 
     $user_hashed_password = '';
 
-
-
     //validates if password was included in update request
     if (!empty($user_old_password)) {
         //validate
-        if (!password_verify($user_old_password, $user_result->user_hashed_password)) {
+        if (!password_verify($user_old_password, $user_result->user_hashed_password))
             $error_arr[] = "Gammelt passord er ikke riktig";
-        } else if (empty($user_password) || empty($user_check_password)) {
+        else if (empty($user_password) || empty($user_check_password))
             $error_arr[] = "Nytt passord er påkrevd";
-        } else if ($user_password != $user_check_password) {
+        else if ($user_password != $user_check_password)
             $error_arr[] = "Passord og gjentatt passord er ikke like";
-        } else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $user_password)) {
+        else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $user_password))
             $error_arr[] = "Passordet må være minst 8 tegn og ha minst én stor bokstav, én liten bokstav og ett tall";
-        } else
+        else
             $user_hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-    } else if (!empty($user_password) || !empty($user_check_password)) {
+    } else if (!empty($user_password) || !empty($user_check_password))
         $error_arr[] = "Skriv inn gammelt passord";
-    }
+    
 
 
     //inserting into db
@@ -79,8 +75,6 @@ if (isset($_POST["submit"])) {
         } else {
             $user->user_update($user_name, $user_phone, $user_email, $session->user_id);
             display_success_message("Din brukerprofil har blitt oppdatert!");
-            //display_loading_symbol();
-            //header("refresh: 2; url=" . url_for('/pages/updateUser.php')); exit(display_success_message("Din brukerprofil har blitt oppdatert!"));
         }
     } else 
         display_error_messages($error_arr);

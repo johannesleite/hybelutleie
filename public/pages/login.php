@@ -12,28 +12,25 @@ if (isset($_POST["submit"])) {
 
 
     //validation of input
-    if (empty($_POST["user_email"])) {
+    if (empty($_POST["user_email"]))
         $error_arr[] = "Epostadresse er påkrevd";
-    } 
 
-    if (empty($_POST["user_password"])) {
+    if (empty($_POST["user_password"]))
         $error_arr[] = "Passord er påkrevd";
-    }
 
     if (empty($error_arr)) {
 
         $user = new User();
 
-        //check if pa
+        //check if email exists in database
         $user_result = $user->user_email_check($user_email);
 
         if ($user_result && password_verify($user_password, $user_result->user_hashed_password)) {
             $session->login($user_result);
 
             display_loading_symbol();
-            header("Refresh:2; url=" . url_for('/index.php')); exit();
+            header("Refresh:1; url=" . url_for('/index.php')); exit();
         } else {
-            //failed
             $error_arr[] = "epostadresse og/eller passord er feil, vennligst prøv på nytt.";
             display_error_messages($error_arr);
         }
