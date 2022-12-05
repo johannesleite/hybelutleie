@@ -2,11 +2,12 @@
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 require_login();
-// if(!isset($_GET['ad_id'])) {
-//     header("location:".url_for('/pages/myAds.php'));
-// }
+
+//set ad_id to get request if exists. Set to post request if not.
+if (isset($_GET["ad_id"]) ? $ad_id = $_GET["ad_id"] : $ad_id = $_POST["ad_id"])
+
 $error_arr = array();
-$ad_id = $_GET["ad_id"];
+
 
 //runs when form has been submitted
 if (isset($_POST["submit"])) {
@@ -20,7 +21,7 @@ if (isset($_POST["submit"])) {
     $ad_size = test_input($_POST["ad_size"]) ?? 0;
     $ad_price = test_input($_POST["ad_price"]) ?? 0;
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
-    $ad_zip = test_input($_POST["ad_zip"]) ?? 0;
+    $ad_zip = test_input($_POST["ad_zip"]) ?? '';
     $ad_id = test_input($_POST["ad_id"]) ?? 0;;
 
     //grab and assign checkbox value for status
@@ -106,21 +107,23 @@ if (isset($_POST["submit"])) {
         $ad_object = new Advert();
         $result = $ad_object->ad_update($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
                                         $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
-        //save img to database
+        //save img to server
         if (is_uploaded_file($temp_filename))
             move_uploaded_file($temp_filename, $dir . $filename);
 
         //send to myAds.php
-        header("Location:".url_for('/pages/myAds.php')); exit();
+        display_success_message("Annonsen ble oppdatert!");
+        header("refresh:3; url=".url_for('/pages/myAds.php')); exit();
     }
     //display error message
     else
         display_error_messages($error_arr);
-} else {
-    $ad = new Advert();
-    $ad_object = $ad->ad_select_one($ad_id);
-    $row = $ad_object->fetch_object();
 }
+
+
+$ad = new Advert();
+$ad_object = $ad->ad_select_one($ad_id);
+$row = $ad_object->fetch_object();
 
 ?>
 
