@@ -61,58 +61,72 @@ if (isset($_POST["submit"])) {
 
     ###### File control #####
 
-    //file info
-    $image_filename = $_FILES["image"]["name"];
-    $temp_filename = $_FILES["image"]["tmp_name"];
-    $file_type = $_FILES['image']['type'];
-    $file_size = $_FILES['image']['size'];
+    //runs only if file has been uploaded
+    if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
 
-    //configurations
-    $dir = $_SERVER['DOCUMENT_ROOT'] . '/hybelutleie/public/assets/img/';
-    $accepted_file_types = array("jpg" => "image/jpeg",
-                                 "png" => "image/png");
-    $max_file_size = 1024*1024*8; //8 MB
+        //file info
+        $image_filename = $_FILES["image"]["name"];
+        $temp_filename = $_FILES["image"]["tmp_name"];
+        $file_type = $_FILES['image']['type'];
+        $file_size = $_FILES['image']['size'];
 
-    //no directory with that name?
-    if (!file_exists($dir)) {
-        if (!mkdir($dir, 0777, true))
-            die("Cannot create directory..." . $dir);
+        //configurations
+        $dir = $_SERVER['DOCUMENT_ROOT'] . '/hybelutleie/public/assets/img/';
+        $accepted_file_types = array("jpg" => "image/jpeg",
+                                    "png" => "image/png");
+        $max_file_size = 1024*1024*8; //8 MB
+
+        //no directory with that name?
+        if (!file_exists($dir)) {
+            if (!mkdir($dir, 0777, true))
+                die("Cannot create directory..." . $dir);
+        }
+
+        //constructing suffix
+        $suffix = array_search($file_type, $accepted_file_types);
+
+        //if filename exists
+        do
+            $filename = substr(md5(date('YmdHis')), 0, 8) . '.' . $suffix;
+        while (file_exists($dir . $filename));
+
+        //image validation
+        if (!empty($file_type) && !in_array($file_type, $accepted_file_types)) {
+            $types = implode(", ", array_keys($accepted_file_types));
+            $error_arr[] = "Ugyldig filformat (Kun $types er tillatt)";
+        }
+
+        if ($file_size > $max_file_size) {
+            $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
+            " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
+        }
     }
 
-    //constructing file name
-    $suffix = array_search($file_type, $accepted_file_types);
-
-    //if filename exists
-    do
-        $filename = substr(md5(date('YmdHis')), 0, 8) . '.' . $suffix;
-    while (file_exists($dir . $filename));
-
-    //image validation
-    if (!empty($file_type) && !in_array($file_type, $accepted_file_types)) {
-        $types = implode(", ", array_keys($accepted_file_types));
-        $error_arr[] = "Ugyldig filformat (Kun $types er tillatt)";
-    }
-
-    if ($file_size > $max_file_size) {
-        $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
-        " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
-    }
-
-
-    ###### Save to Database #####
+    ###### Save to Database #####    
+    
+    //create file path if file has been uploaded
+    if (!empty($temp_filename)) 
     $sql_filepath = url_for('/assets/img/') . $filename;
+    else
+    $sql_filepath = '';
 
     //if no error save user input to database
     if (empty($error_arr)) {
         $ad_object = new Advert();
-        $result = $ad_object->ad_update($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
-                                        $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
+        if (!empty($temp_filename)) {
+        $ad_object->ad_update($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
+                              $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
+        }
+        else {
+        $ad_object->ad_update_no_file($ad_title, $ad_residence_type, $ad_desc, $ad_size, 
+                                      $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);    
+        }
         //save img to server
-        if (is_uploaded_file($temp_filename))
+        if (is_uploaded_file($_FILES["image"]["tmp_name"]))
             move_uploaded_file($temp_filename, $dir . $filename);
 
-        //send to myAds.php
-        display_success_message("Annonsen ble oppdatert!");
+        //display successful message
+        display_success_message("Din annonse har blitt oppdatert, du blir videresendt til dine annonser");
         header("refresh:3; url=".url_for('/pages/myAds.php')); exit();
     }
     //display error message

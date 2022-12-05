@@ -87,4 +87,12 @@ class Advert extends Database {
         $stmt->execute();
     }
 
+    //update ad without uploaded file
+    public function ad_update_no_file ($ad_title, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id) {
+        $sql = "UPDATE advert SET ad_title=?, ad_residence_type=?, ad_desc=?, ad_size=?, ad_price=?, ad_street_address=?, ad_zip=?, ad_status=? WHERE ad_id=?";
+        $stmt = Database::$db->prepare($sql);
+        $stmt->bind_param("sisiissii", $ad_title, $ad_residence_type, $ad_desc, $ad_size, $ad_price, $ad_street_address, $ad_zip, $ad_status, $ad_id);
+        $stmt->execute();
+    }
+
 }

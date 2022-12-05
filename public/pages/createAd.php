@@ -8,7 +8,7 @@ $error_arr = array();
 
 //runs when form has been submitted
 if (isset($_POST["submit"])) {
-    var_dump($_FILES);
+
     ###### User input control #####
 
     //grab data from form
@@ -45,7 +45,7 @@ if (isset($_POST["submit"])) {
 
     if (empty($ad_zip))
         $error_arr[] = "Postnummer er påkrevd";
-    else if (strlen($ad_zip != 4) && !is_numeric($ad_zip))
+    else if (strlen($ad_zip != 4) && !preg_match("/^[0-9]{4}$/", $ad_zip))
         $error_arr[] = "Postnummer må være fire tall";
 
 
