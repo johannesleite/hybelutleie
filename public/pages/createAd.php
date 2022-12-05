@@ -8,7 +8,7 @@ $error_arr = array();
 
 //runs when form has been submitted
 if (isset($_POST["submit"])) {
-
+    var_dump($_FILES);
     ###### User input control #####
 
     //grab data from form
@@ -18,7 +18,7 @@ if (isset($_POST["submit"])) {
     $ad_size = test_input($_POST["ad_size"]) ?? 0;
     $ad_price = test_input($_POST["ad_price"]) ?? 0;
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
-    $ad_zip = test_input($_POST["ad_zip"]) ?? 0;
+    $ad_zip = test_input($_POST["ad_zip"]) ?? '';
 
     //validate user input
     if (empty($ad_title))
@@ -51,55 +51,63 @@ if (isset($_POST["submit"])) {
 
     ###### File control #####
 
-    //file info
-    $image_filename = $_FILES["image"]["name"];
-    $temp_filename = $_FILES["image"]["tmp_name"];
-    $file_type = $_FILES['image']['type'];
-    $file_size = $_FILES['image']['size'];
+    //runs only if file has been uploaded
+    if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
+       
+        //file info
+        $image_filename = $_FILES["image"]["name"];
+        $temp_filename = $_FILES["image"]["tmp_name"];
+        $file_type = $_FILES['image']['type'];
+        $file_size = $_FILES['image']['size'];
 
-    //configurations
-    $dir = $_SERVER['DOCUMENT_ROOT'] . '/hybelutleie/public/assets/img/';
-    $accepted_file_types = array("jpg" => "image/jpeg",
-                                 "png" => "image/png");
-    $max_file_size = 1024*1024*8; //8 MB
+        //configurations
+        $dir = $_SERVER['DOCUMENT_ROOT'] . '/hybelutleie/public/assets/img/';
+        $accepted_file_types = array("jpg" => "image/jpeg",
+                                    "png" => "image/png");
+        $max_file_size = 1024*1024*8; //8 MB
 
-    //no directory with that name?
-    if (!file_exists($dir)) {
-        if (!mkdir($dir, 0777, true))
-            die("Cannot create directory..." . $dir);
+        //no directory with that name?
+        if (!file_exists($dir)) {
+            if (!mkdir($dir, 0777, true))
+                die("Cannot create directory..." . $dir);
+        }
+
+        //constructing suffix
+        $suffix = array_search($file_type, $accepted_file_types);
+
+        //if filename exists
+        do
+            $filename = substr(md5(date('YmdHis')), 0, 8) . '.' . $suffix;
+        while (file_exists($dir . $filename));
+
+        //image validation
+        if (!empty($file_type) && !in_array($file_type, $accepted_file_types)) {
+            $types = implode(", ", array_keys($accepted_file_types));
+            $error_arr[] = "Ugyldig filformat (Kun $types er tillatt)";
+        }
+
+        if ($file_size > $max_file_size) {
+            $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
+            " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
+        }
     }
-
-    //constructing file name
-    $suffix = array_search($file_type, $accepted_file_types);
-
-    //if filename exists
-    do
-        $filename = substr(md5(date('YmdHis')), 0, 8) . '.' . $suffix;
-    while (file_exists($dir . $filename));
-
-    //image validation
-    if (!empty($file_type) && !in_array($file_type, $accepted_file_types)) {
-        $types = implode(", ", array_keys($accepted_file_types));
-        $error_arr[] = "Ugyldig filformat (Kun $types er tillatt)";
-    }
-
-    if ($file_size > $max_file_size) {
-        $error_arr[] = "Filstørrelsen (" . round($file_size / 1048576, 2) . 
-        " MB) er større enn tillatt (" . round($max_file_size / 1048576, 2) . " MB)"; // Bin. conversion
-    }
-
 
     ###### Save to Database #####
+
+    //create file path if file has been uploaded
+    if (!empty($temp_filename)) 
     $sql_filepath = url_for('/assets/img/') . $filename;
+    else
+    $sql_filepath = '';
 
     //if no error save user input to database
     if (empty($error_arr)) {
         $ad = new Advert;
         $ad->ad_insert($ad_title, $sql_filepath, $ad_residence_type, $ad_desc, $ad_size, 
                         $ad_price, $ad_street_address, $ad_zip, $session->user_id);
-
-        //save img to database
-        if (is_uploaded_file($temp_filename))
+        
+        //save img to server
+        if (is_uploaded_file($_FILES["image"]["tmp_name"]))
             move_uploaded_file($temp_filename, $dir.$filename);
 
         //display successful message
