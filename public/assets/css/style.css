@@ -1,0 +1,12 @@
+.btn-ads {
+    min-width: 170px;
+}
+
+.ad-image {
+    max-height: 300px;
+}
+
+.ad-single-image {
+    max-height: 700px;
+    width: auto;
+}

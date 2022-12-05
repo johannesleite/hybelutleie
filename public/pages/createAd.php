@@ -96,9 +96,9 @@ if (isset($_POST["submit"])) {
 
     //create file path if file has been uploaded
     if (!empty($temp_filename)) 
-    $sql_filepath = url_for('/assets/img/') . $filename;
+        $sql_filepath = url_for('/assets/img/') . $filename;
     else
-    $sql_filepath = '';
+        $sql_filepath = '';
 
     //if no error save user input to database
     if (empty($error_arr)) {
@@ -112,7 +112,7 @@ if (isset($_POST["submit"])) {
 
         //display successful message
         display_success_message("Din annonse har blitt opprettet, du blir videresendt til dine annonser");
-        header("Refresh:3; url=" . url_for('/pages/myAds.php')); exit(); 
+        header("Refresh:2; url=" . url_for('/pages/myAds.php')); exit(); 
     }
         //display error message
     else 
