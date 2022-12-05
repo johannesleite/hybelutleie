@@ -22,7 +22,7 @@ if (isset($_POST["submit"])) {
     $ad_price = test_input($_POST["ad_price"]) ?? 0;
     $ad_street_address = test_input($_POST["ad_street_address"]) ?? '';
     $ad_zip = test_input($_POST["ad_zip"]) ?? '';
-    $ad_id = test_input($_POST["ad_id"]) ?? 0;;
+    $ad_id = test_input($_POST["ad_id"]) ?? 0;
 
     //grab and assign checkbox value for status
     if (isset($_POST["ad_status"]))
@@ -55,7 +55,7 @@ if (isset($_POST["submit"])) {
 
     if (empty($ad_zip))
         $error_arr[] = "Postnummer er påkrevd";
-    else if (strlen($ad_zip != 4) && !is_numeric($ad_zip))
+    else if (strlen($ad_zip != 4) && !preg_match("/^[0-9]{4}$/", $ad_zip))
         $error_arr[] = "Postnummer må være fire tall";
 
 
