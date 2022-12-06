@@ -68,6 +68,7 @@
         </div>';
     }
 
+    //Output loading symbol
     function display_loading_symbol() {
         echo
         '<div class="position-absolute top-50 start-50 translate-middle">

@@ -19,7 +19,7 @@
     require_once('credentials.php');
     require_once('dbConnection.php');
 
-    //for å autoinkludere alle klasser
+    //To include all classes
     foreach (glob('classes/*.class.php') as $file) {
         require_once($file);
     }
@@ -31,13 +31,6 @@
       }
       spl_autoload_register('my_autoload');
 
-
-    //kan også:
-    /* 
-    require('session.class.php');
-    require('advert.class.php');
-    require('user.class.php');
-    */
 
     //set up connection to use in classes
     $db = connection();

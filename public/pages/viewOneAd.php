@@ -2,12 +2,17 @@
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 
+//fetching id from get request
+if (isset($_GET["ad_id"]))
+    $ad_id = $_GET["ad_id"];
+else {
+    header("location:" . url_for('/index.php')); 
+    exit(); 
+}
+
 $ad = new Advert;
 
-//fetching id from get request
-$adId = $_GET["ad_id"];
-
-$result = $ad->ad_select_one($adId);
+$result = $ad->ad_select_one($ad_id);
 while ($row = $result->fetch_object()) {
 ?>
 

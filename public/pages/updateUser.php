@@ -108,7 +108,7 @@ $user = $user->user_by_id($session->user_id);
                 <input type="password" name="user_old_password" id="password" class="form-control" />
             </div>
             <div class="form-outline mb-2">
-                <label class="form-label" for="password">Nytt passord (Minst 8 tegn)</label>
+                <label class="form-label" for="password">Nytt passord (Minst 8 tegn, én liten og stor bokstav og et tall)</label>
                 <input type="password" name="user_password" id="password" class="form-control" />
             </div>
             <div class="form-outline mb-2">

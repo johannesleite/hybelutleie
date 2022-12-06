@@ -1,33 +1,7 @@
 <?php
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
-?>
 
-<!--contact form-->
-
-<div class="container d-flex align-items-center my-5">
-    <div class="col-md-6 py-4 mx-auto">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-            <div class="form-outline mb-3">
-                <label class="form-label" for="from_email">Din epostadresse</label>
-                <input type="email" name="from_email" id="from_email" class="form-control" />
-            </div>
-            <div class="form-outline mb-3">
-                <label class="form-label" for="subject">Tittel</label>
-                <input type="text" name="subject" id="subject" class="form-control" />
-            </div>
-            <div class="form-outline mb-3">
-                <label class="form-label" for="message">Beskrivelse</label>
-                <textarea class="form-control" name="message" id="message" rows="8" placeholder="Legg til beskrivelse her"></textarea>
-            </div>
-            <input type="hidden" name="to_email" value="<?php echo $_POST["to_email"] ?>">
-            <input type="hidden" name="ad_title" value="<?php echo $_POST["ad_title"] ?>">
-            <button type="submit" name="submit" class="btn btn-primary">Send melding</button>
-        </form>
-    </div>
-</div>
-
-<?php
 
 if (isset($_POST["submit"])) {
 
@@ -67,3 +41,29 @@ if (isset($_POST["submit"])) {
         display_error_messages($error_arr);
 
 }
+
+?>
+
+<!--contact form-->
+
+<div class="container d-flex align-items-center my-5">
+    <div class="col-md-6 py-4 mx-auto">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <div class="form-outline mb-3">
+                <label class="form-label" for="from_email">Din epostadresse</label>
+                <input type="email" name="from_email" id="from_email" class="form-control" />
+            </div>
+            <div class="form-outline mb-3">
+                <label class="form-label" for="subject">Tittel</label>
+                <input type="text" name="subject" id="subject" class="form-control" />
+            </div>
+            <div class="form-outline mb-3">
+                <label class="form-label" for="message">Beskrivelse</label>
+                <textarea class="form-control" name="message" id="message" rows="8" placeholder="Legg til beskrivelse her"></textarea>
+            </div>
+            <input type="hidden" name="to_email" value="<?php echo $_POST["to_email"] ?>">
+            <input type="hidden" name="ad_title" value="<?php echo $_POST["ad_title"] ?>">
+            <button type="submit" name="submit" class="btn btn-primary">Send melding</button>
+        </form>
+    </div>
+</div>
