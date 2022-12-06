@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2022 at 05:35 AM
+-- Generation Time: Dec 06, 2022 at 12:29 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -38,7 +38,7 @@ CREATE TABLE `advert` (
   `ad_size` int(11) NOT NULL,
   `ad_price` int(11) NOT NULL,
   `ad_street_address` varchar(255) NOT NULL,
-  `ad_zip` int(5) NOT NULL,
+  `ad_zip` varchar(4) NOT NULL,
   `ad_status` tinyint(1) NOT NULL DEFAULT 1,
   `ad_timestamp` date NOT NULL DEFAULT current_timestamp(),
   `ad_user_id` int(11) NOT NULL
@@ -49,10 +49,13 @@ CREATE TABLE `advert` (
 --
 
 INSERT INTO `advert` (`ad_id`, `ad_title`, `ad_image`, `ad_residence_type`, `ad_desc`, `ad_size`, `ad_price`, `ad_street_address`, `ad_zip`, `ad_status`, `ad_timestamp`, `ad_user_id`) VALUES
-(1, 'nydelig hybel', '/hybelutleie/public/assets/img/159_1414186351.jpg', 1, 'hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg hybel uten mugg ', 40, 5000, 'Kaserneveien 8A', 4630, 1, '2022-11-07', 1),
-(2, 'rom ved uia', '/hybelutleie/public/assets/img/159_89402933.jpg', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In hendrerit gravida rutrum quisque. Blandit volutpat maecenas volutpat blandit aliquam etiam. Nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Sed augue lacus viverra vitae congue eu.\n\n Curabitur vitae nunc sed velit dignissim sodales ut eu sem. Euismod nisi porta lorem mollis aliquam ut porttitor leo. Morbi tristique senectus et netus et malesuada. Orci ac auctor augue mauris augue neque gravida in fermentum. Congue quisque egestas diam in arcu cursus euismod quis viverra. Ultrices vitae auctor eu augue ut.\n\n Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cras sed felis eget velit aliquet sagittis id consectetur. Viverra tellus in hac habitasse platea dictumst vestibulum. Ornare massa eget egestas purus. Scelerisque felis imperdiet proin fermentum leo. Convallis aenean et tortor at risus viverra adipiscing at.', 11, 5300, 'Ingerthas vei 5', 4630, 1, '2022-11-07', 2),
-(3, 'Rom med utsikt', '/hybelutleie/public/assets/img/159_1743763257.jpg', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 9, 3500, 'Ronatoppen 46', 4638, 1, '2022-11-07', 4),
-(4, 'Hybel ved universitetet i Agder', '/hybelutleie/public/assets/img/159_1107255931.jpg', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa sed elementum tempus egestas sed sed risus.\r\n\r\n Viverra accumsan in nisl nisi scelerisque. Et netus et malesuada fames ac turpis egestas maecenas. A arcu cursus vitae congue. \r\n\r\nCras pulvinar mattis nunc sed blandit. Tortor at auctor urna nunc id cursus metus aliquam. A lacus vestibulum sed arcu non odio euismod lacinia at. Sed blandit libero volutpat sed cras ornare. Quam viverra orci sagittis eu volutpat odio. Mattis rhoncus urna neque viverra justo nec. \r\n\r\nEget mauris pharetra et ultrices neque. Libero nunc consequat interdum varius sit amet.', 45, 6000, 'Koggeveien 17', 4624, 1, '2022-11-09', 1);
+(35, 'Nydelig leilighet midt i gågata', '/hybelutleie/public/assets/img/af8345f3.jpg', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse risus quam, lacinia nec accumsan iaculis, vehicula sit amet tellus. Praesent ut suscipit nibh. Mauris risus massa, sodales et hendrerit ut, fringilla sed tellus. Aenean auctor sapien et tortor vestibulum, in tincidunt turpis ornare. Vivamus eget nisi faucibus, dapibus leo at, luctus odio. \r\n\r\nPhasellus facilisis leo bibendum, imperdiet turpis sit amet, mattis justo. Nullam ultrices purus sed nulla aliquam, ut suscipit metus tincidunt. Cras ut tortor vel massa imperdiet posuere in ornare tortor. \r\n\r\nVestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse imperdiet risus eros, eget eleifend eros pellentesque in. Nullam posuere nisi ut lorem auctor varius. Vestibulum id elit nisi. Donec sagittis mollis ultrices.', 75, 12500, 'Solsletteveien 9A', '4019', 0, '2022-12-05', 19),
+(36, 'Kjellerhybel', '/hybelutleie/public/assets/img/04cb9585.jpg', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse risus quam, lacinia nec accumsan iaculis, vehicula sit amet tellus. Praesent ut suscipit nibh. Mauris risus massa, sodales et hendrerit ut, fringilla sed tellus. Aenean auctor sapien et tortor vestibulum, in tincidunt turpis ornare. \r\n\r\nVivamus eget nisi faucibus, dapibus leo at, luctus odio. Phasellus facilisis leo bibendum, imperdiet turpis sit amet, mattis justo. Nullam ultrices purus sed nulla aliquam, ut suscipit metus tincidunt.', 40, 4000, 'Lian Platå 55', '4638', 0, '2022-12-05', 19),
+(37, 'Rom i fint kollektiv', '/hybelutleie/public/assets/img/6fed1973.jpg', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse risus quam, lacinia nec accumsan iaculis, vehicula sit amet tellus. Praesent ut suscipit nibh. Mauris risus massa, sodales et hendrerit ut, fringilla sed tellus. Aenean auctor sapien et tortor vestibulum, in tincidunt turpis ornare. Vivamus eget nisi faucibus, dapibus leo at, luctus odio.', 11, 4500, 'Kaserneveien 8D', '4630', 1, '2022-12-05', 19),
+(38, 'Hybel uten mugg', '/hybelutleie/public/assets/img/fac81720.jpg', 1, 'Her er ikke mugg å finne.', 17, 2000, 'Soppveien 1', '3157', 1, '2022-12-05', 19),
+(39, 'Bøttekott', '/hybelutleie/public/assets/img/16a476d6.jpg', 2, 'Bøttekott som kan soves i ved rett innstilling', 2, 7800, 'Kottemyra 151', '7142', 1, '2022-12-05', 19),
+(40, 'Hybel til korttidsutleie', '/hybelutleie/public/assets/img/75ce4661.jpg', 1, 'Hei, jeg leier ut en hybel', 43, 11500, 'Liankollen 2', '4638', 1, '2022-12-06', 21),
+(41, 'Nytt rom i flott og fint kollektiv', '/hybelutleie/public/assets/img/01754e74.jpg', 2, 'Nytt rom i flott og fint kollektiv som er fint og flott.', 14, 4300, 'Kongsgård Allé 7', '4631', 1, '2022-12-06', 19);
 
 -- --------------------------------------------------------
 
@@ -5227,9 +5230,9 @@ CREATE TABLE `residence_type` (
 --
 
 INSERT INTO `residence_type` (`residence_type_id`, `residence_type_name`) VALUES
-(1, 'hybel'),
-(2, 'rom i kollektiv'),
-(3, 'leilighet');
+(1, 'Hybel'),
+(2, 'Rom i kollektiv'),
+(3, 'Leilighet');
 
 -- --------------------------------------------------------
 
@@ -5242,7 +5245,7 @@ CREATE TABLE `user` (
   `user_name` varchar(255) NOT NULL,
   `user_phone` varchar(15) NOT NULL,
   `user_email` varchar(255) NOT NULL,
-  `user_hashed_password` varchar(26) NOT NULL
+  `user_hashed_password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -5250,13 +5253,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_name`, `user_phone`, `user_email`, `user_hashed_password`) VALUES
-(1, 'Johannes Leite', '12390432', 'joh@lei.no', '$2y$10$50pWn8RJrSVZupH22UJ'),
-(2, 'Jens Jensen', '454654', 'fds@fds.fds', '$2y$10$i/LgDWwthKQnQ0IT8Zq'),
-(3, 'fdsjak', '49302', 'kfdldsakf@fdkslokfd.no', '$2y$10$X/Ug.hKaTjkIY3ov7Hk'),
-(4, 'Mons Monsen', '456', 'fdklsfkdlkf@kfdlskfkk.fdlskf', '$2y$10$v.Hw.1yWQQrNvRQ0uLe'),
-(5, 'Nils Nilsen', '12345678', 'jole@jole.jole', '$2y$10$npzGx7anZ3CBUrcrg52'),
-(6, 'Endre Kvam', '12345678', 'endre@kvam.no', '$2y$10$RDe8.I3JhBgufCZAVUa'),
-(7, 'Coca cola', '12345678', 'coca@cola.no', '$2y$10$VOf60eRauY9C2JwVZPU');
+(19, 'Johannes Leite', '81549300', 'johannes@leite.no', '$2y$10$ZoZSQGnXKn622rUKh7HQZea0jIzSB8jdIIk5kOGp.C.eQ12iV61Nu'),
+(20, 'Peter André Busch', '81549300', 'peter@pox.no', '$2y$10$CsduOoDqkLK3OUvw12VW4OTG0e9MpKlCpMVdRnMFvSYMaxbdKWAPi'),
+(21, 'Joh Lei', '12345678', 'leite.johannes@gmail.com', '$2y$10$RzC8D5OnzeK3ROjyUOQWhOJ.bZbyaWMx1eh4bL1x8un1ltAS8sk4y'),
+(22, 'Petter Smart', '12312312', 'petter@smart.no', '$2y$10$dZ3hdp4gdPaChYwo4YAWXen.LXC620m0UzkePNPMjDilzxa7jwHja');
 
 --
 -- Indexes for dumped tables
@@ -5291,7 +5291,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `advert`
 --
 ALTER TABLE `advert`
-  MODIFY `ad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `residence_type`
@@ -5303,7 +5303,7 @@ ALTER TABLE `residence_type`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables

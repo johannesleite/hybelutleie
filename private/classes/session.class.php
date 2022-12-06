@@ -7,8 +7,7 @@ class Session {
     public $user_email;
     public $user_name;
 
-    public function __construct()
-    {
+    public function __construct() {
     session_start();
     $this->check_stored_login();
     }
