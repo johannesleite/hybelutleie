@@ -4,6 +4,7 @@ include(INC_PATH . '/header.php');
 ?>
 
 <!--bootstrap cards with each individual advert-->
+
 <div class="container d-flex align-items-center">
 
     <!--Filtering of adverts-->
@@ -26,12 +27,10 @@ include(INC_PATH . '/header.php');
         $ads = $ads->ad_select_all(isset($_GET['filter']) ? $_GET['filter'] : '');
 
         while ($ad = $ads->fetch_object()) {
-
         ?>
-
             <div class="card shadow-sm border-0 my-4">
                 <div class="row g-0">
-                    <div class="col-md-4 text-center bg-secondary bg-gradient" style="max-height: 300px;">
+                    <div class="col-md-4 ad-image text-center bg-light">
                         <img src="<?php echo $ad->ad_image; ?>" class="img-fluid rounded-start h-100" alt="Denne annonsen har ikke bilde">
                     </div>
                     <div class="col-md-8 align-self-center">
@@ -47,14 +46,13 @@ include(INC_PATH . '/header.php');
                                 <p><?php echo $ad->ad_zip . ", " . $ad->zip_location; ?></p>
                                 <form action="<?php echo url_for('/pages/viewOneAd.php'); ?>" method="get">
                                     <input type="hidden" name="ad_id" value="<?php echo $ad->ad_id; ?>">
-                                    <button type="submit" class="btn btn-primary">Se hele annonsen</button>
+                                    <button type="submit" class="btn btn-ads btn-primary">Se hele annonsen</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         <?php } ?>
     </div>
 </div>

@@ -1,21 +1,22 @@
 <?php
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
-?>
 
-<!--bootstrap cards with each individual advert-->
-
-<?php
 $ad = new Advert;
 
+//fetching id from get request
 $adId = $_GET["ad_id"];
+
 $result = $ad->ad_select_one($adId);
 while ($row = $result->fetch_object()) {
 ?>
+
+    <!--bootstrap cards with each individual advert-->
+
     <div class="container d-flex align-items-center my-4">
         <div class="col-lg-10 mx-auto">
-            <div class="row">
-                <img src="<?php echo $row->ad_image; ?>" class="mb-2" alt="advert image">
+            <div class="row justify-content-center">
+                <img src="<?php echo $row->ad_image; ?>" class="mb-2 ad-single-image" alt="Denne annonsen har ikke bilde">
             </div>
             <div class="align-self-center">
                 <div class="d-flex justify-content-between">
@@ -33,7 +34,11 @@ while ($row = $result->fetch_object()) {
                         <div class="ratio ratio-4x3"><?php echo api_address_map($row->ad_street_address, $row->ad_zip);?></div>
                         <p class=""><?php echo $row->ad_street_address . ", " . $row->ad_zip . " " . $row->zip_location; ?></p>
                         <p class=""><strong><?php echo $row->user_name; ?></strong></p>
-                        <a href="mailto:<?php echo $row->user_email?>" class="btn btn-primary">Kontakt utleier</a>
+                        <form action="<?php echo url_for('/pages/contactSeller.php'); ?>" method="post">
+                            <input type="hidden" name="to_email" value="<?php echo $row->user_email; ?>">
+                            <input type="hidden" name="ad_title" value="<?php echo $row->ad_title; ?>">
+                            <button type="submit" class="btn btn-ads btn-primary">Kontakt utleier</button>
+                        </form>
                     </div>
                 </div>
             </div>

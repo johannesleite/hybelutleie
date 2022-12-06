@@ -14,47 +14,43 @@ if (isset($_POST["submit"])) {
     $user_check_password = test_input($_POST["user_check_password"]) ?? '';
 
     //validation of input
-    if (empty($user_name)) {
+    if (empty($user_name))
         $error_arr[] = "Navn er påkrevd";
-    } else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name)) {
+    else if (!preg_match("/^[a-zA-ZæÆøØåÅéÉ' -]*$/", $user_name))
         $error_arr[] = "Navn kan kun inneholde norske bokstaver og mellomrom";
-    }
 
-    if (empty($user_phone)) {
+    if (empty($user_phone))
         $error_arr[] = "Telefonnummer er påkrevd";
-    } else if (!is_numeric($user_phone)) {
+    else if (!is_numeric($user_phone))
         $error_arr[] = "Telefonnummer kan bare inneholde tall";
-    }
 
-    if (empty($user_email)) {
+    if (empty($user_email))
         $error_arr[] = "Epostadresse er påkrevd";
-    } else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+    else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL))
         $error_arr[] = "Epostadressen har ugyldig format";
-    } 
     
     //creates a new user object
     $user = new User;
 
     $exists = $user->user_email_check($user_email);
 
-    if ($exists) {
+    if ($exists)
         $error_arr[] = "En bruker med denne eposten eksisterer allerede";
-    }
 
-    if (empty($user_password) || empty($user_check_password)) {
+    if (empty($user_password) || empty($user_check_password))
         $error_arr[] = "Passord er påkrevd";
-    } else if ( $user_password != $user_check_password) {
+    else if ( $user_password != $user_check_password)
         $error_arr[] = "Passord og gjentatt passord er ikke like";
-    } else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $user_password) ) {
+    else if (!preg_match("/^(?=.*[A-ZÆØÅÉ])(?=.*[a-zæøåé])(?=.*\d).{8,}$/", $user_password))
         $error_arr[] = "Passordet må være minst 8 tegn og ha minst én stor bokstav, én liten bokstav og ett tall";
-    } else
+    else
         $user_hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 
     //printing of content and inserting into db
     if (empty($error_arr)) {
         $user->user_register($user_name, $user_phone, $user_email, $user_hashed_password);
         display_success_message("Din brukerprofil har blitt opprettet, du blir videresendt til innloggingssiden!");
-        header("Refresh:3; url=" . url_for('/pages/login.php')); exit();
+        header("Refresh:2; url=" . url_for('/pages/login.php')); exit();
     }
     else 
         display_error_messages($error_arr);
@@ -82,7 +78,7 @@ if (isset($_POST["submit"])) {
                 <input type="email" name="user_email" id="email" class="form-control" />
             </div>
             <div class="form-outline mb-2">
-                <label class="form-label" for="password">Passord (Minst 8 tegn)</label>
+                <label class="form-label" for="password">Passord (Minst 8 tegn, én liten og stor bokstav og et tall)</label>
                 <input type="password" name="user_password" id="password" class="form-control" />
             </div>
             <div class="form-outline mb-2">
