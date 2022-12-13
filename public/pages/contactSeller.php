@@ -2,7 +2,7 @@
 require_once('../../private/initialize.php');
 include(INC_PATH . '/header.php');
 
-
+//runs when contact form has been submitted
 if (isset($_POST["submit"])) {
 
     $error_arr = [];
@@ -24,6 +24,7 @@ if (isset($_POST["submit"])) {
     if (empty($message))
         $error_arr[] = "Beskrivelse er påkrevd";
 
+    //create and send email with feedback
     if (empty($error_arr)) {
 
         $headers = "From: Hybelutleie AS";
